@@ -1,2053 +1,1425 @@
 <!DOCTYPE html>
-<html lang="pt-PT">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>Salo Urgente - Angola</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    
-    <!-- Firebase SDK (versão compatível com GitHub Pages) -->
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-    
+    <title>ServiçoLocal - Marketplace</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ============================================================
-           DESIGN SYSTEM - SALO URGENTE
-           ============================================================ */
-        :root {
-            --primary: #0a0612;
-            --primary-light: #14101f;
-            --secondary: #1a3a2a;
-            --secondary-light: #2a5a3a;
-            --accent: #d4a017;
-            --accent-light: #f0cc50;
-            --accent-glow: rgba(212, 160, 23, 0.15);
-            
-            --success: #10b981;
-            --success-bg: rgba(16, 185, 129, 0.1);
-            --warning: #f59e0b;
-            --warning-bg: rgba(245, 158, 11, 0.1);
-            --error: #ef4444;
-            --error-bg: rgba(239, 68, 68, 0.1);
-            --info: #3b82f6;
-            --info-bg: rgba(59, 130, 246, 0.1);
-            
-            --bg-primary: #06040a;
-            --bg-secondary: #0c0818;
-            --bg-card: rgba(255,255,255,0.03);
-            --bg-card-hover: rgba(255,255,255,0.06);
-            
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255,255,255,0.7);
-            --text-tertiary: rgba(255,255,255,0.35);
-            
-            --border-color: rgba(255,255,255,0.05);
-            --border-hover: rgba(255,255,255,0.1);
-            
-            --shadow-card: 0 8px 32px rgba(0,0,0,0.5);
-            --shadow-glow: 0 0 40px rgba(212, 160, 23, 0.08);
-            --shadow-elevated: 0 16px 64px rgba(0,0,0,0.6);
-            
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-            --radius-xl: 20px;
-            --radius-2xl: 28px;
-            --radius-full: 9999px;
-            
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        /* ===== ESTILOS ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            min-height: 100vh;
-            overflow-x: hidden;
+            background: #f8fafc;
+            padding-bottom: 80px;
         }
-
-        .bg-effects {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-        .bg-effects .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.08;
-            animation: orbFloat 20s ease-in-out infinite;
-        }
-        .bg-effects .orb-1 {
-            width: 500px;
-            height: 500px;
-            top: -200px;
-            right: -200px;
-            background: var(--accent);
-            animation-delay: 0s;
-        }
-        .bg-effects .orb-2 {
-            width: 400px;
-            height: 400px;
-            bottom: -100px;
-            left: -100px;
-            background: #2a5a3a;
-            animation-delay: -7s;
-        }
-        .bg-effects .orb-3 {
-            width: 300px;
-            height: 300px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #4a2a6a;
-            animation-delay: -14s;
-        }
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(30px, -30px) scale(1.1); }
-            50% { transform: translate(-20px, 20px) scale(0.9); }
-            75% { transform: translate(20px, -10px) scale(1.05); }
-        }
-
-        .app {
+        .app-container {
             max-width: 480px;
             margin: 0 auto;
-            position: relative;
-            z-index: 1;
+            padding: 16px 16px 80px 16px;
+            background: #ffffff;
             min-height: 100vh;
-            padding-bottom: 90px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
         }
-
-        /* ===== LOADING ===== */
-        .app-loading {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            transition: opacity 0.5s ease;
-        }
-        .app-loading.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
-        .app-loading .spinner {
-            width: 48px;
-            height: 48px;
-            border: 3px solid rgba(255,255,255,0.05);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .app-loading .loading-text {
-            margin-top: 16px;
-            color: var(--text-tertiary);
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* ===== HEADER ===== */
         .header {
-            padding: 20px 20px 16px;
-            background: rgba(10, 6, 18, 0.85);
-            backdrop-filter: blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            position: sticky;
-            top: 0;
-            z-index: 30;
-            display: none;
-        }
-
-        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 12px 0 16px;
+            border-bottom: 1px solid #e9edf2;
         }
-
         .logo {
             font-size: 24px;
-            font-weight: 900;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            letter-spacing: -0.5px;
+            font-weight: 700;
+            color: #0f2b3d;
         }
         .logo i {
-            color: var(--accent);
-            font-size: 28px;
-            filter: drop-shadow(0 0 20px rgba(212, 160, 23, 0.15));
+            color: #2b7a62;
+            margin-right: 6px;
         }
-        .logo-text {
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .logo .admin-badge {
+            font-size: 12px;
+            background: #dc2626;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 30px;
+            margin-left: 6px;
         }
-        .logo-sub {
-            font-size: 8px;
-            color: var(--text-tertiary);
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            display: block;
-            margin-top: -2px;
-            -webkit-text-fill-color: var(--text-tertiary);
-        }
-
         .header-actions {
             display: flex;
-            gap: 8px;
-            align-items: center;
+            gap: 14px;
+            color: #475569;
         }
-
-        .header-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: var(--radius-full);
-            border: 1px solid rgba(255,255,255,0.05);
-            background: rgba(255,255,255,0.03);
-            color: var(--text-secondary);
-            font-size: 16px;
+        .header-actions i {
+            font-size: 20px;
             cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            backdrop-filter: blur(10px);
+            transition: 0.2s;
         }
-        .header-btn:hover {
-            background: rgba(255,255,255,0.06);
-            border-color: rgba(255,255,255,0.08);
-            transform: translateY(-2px);
-        }
-        .header-btn:active { transform: scale(0.92); }
-
-        .header-greeting {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            font-weight: 400;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .header-greeting strong {
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        .header-greeting .logout-link {
-            color: var(--text-tertiary);
-            font-size: 11px;
-            cursor: pointer;
-            transition: var(--transition);
-            text-decoration: underline;
-        }
-        .header-greeting .logout-link:hover {
-            color: var(--error);
-        }
-
-        /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             position: fixed;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            max-width: 440px;
-            width: calc(100% - 32px);
-            background: rgba(12, 8, 24, 0.92);
-            backdrop-filter: blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius-2xl);
-            display: none;
-            justify-content: space-around;
-            padding: 6px 8px;
-            z-index: 40;
-            box-shadow: 0 8px 40px rgba(0,0,0,0.7);
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-            font-size: 9px;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            padding: 8px 14px;
-            border-radius: var(--radius-lg);
-            transition: var(--transition-spring);
-            background: transparent;
-            border: none;
-            position: relative;
-            min-width: 52px;
-            text-decoration: none;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-        .nav-item i {
-            font-size: 20px;
-            transition: var(--transition-spring);
-        }
-        .nav-item span {
-            transition: var(--transition);
-            font-size: 8px;
-        }
-        .nav-item.active {
-            color: var(--text-primary);
-        }
-        .nav-item.active i {
-            transform: translateY(-4px) scale(1.1);
-            color: var(--accent);
-        }
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            border-radius: var(--radius-full);
-            box-shadow: 0 0 20px rgba(212, 160, 23, 0.3);
-        }
-        .nav-item:hover { color: var(--text-secondary); }
-        .nav-item:active { transform: scale(0.92); }
-
-        /* ===== AUTH ===== */
-        .auth-screen {
-            display: none;
-            padding: 40px 20px;
-            min-height: 100vh;
-            align-items: center;
-            justify-content: center;
-        }
-        .auth-screen.active {
-            display: flex;
-        }
-
-        .auth-box {
-            background: var(--bg-card);
-            border-radius: var(--radius-2xl);
-            padding: 32px 24px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            width: 100%;
-            max-width: 400px;
-        }
-        .auth-box .auth-logo {
-            text-align: center;
-            margin-bottom: 24px;
-        }
-        .auth-box .auth-logo i {
-            font-size: 48px;
-            color: var(--accent);
-            filter: drop-shadow(0 0 30px rgba(212, 160, 23, 0.2));
-        }
-        .auth-box .auth-logo h1 {
-            font-size: 28px;
-            font-weight: 900;
-            background: linear-gradient(135deg, #ffffff 30%, var(--accent-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-top: 4px;
-        }
-        .auth-box .auth-logo p {
-            color: var(--text-tertiary);
-            font-size: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-        .auth-box .auth-switch {
-            text-align: center;
-            margin-top: 16px;
-            color: var(--text-tertiary);
-            font-size: 13px;
-        }
-        .auth-box .auth-switch a {
-            color: var(--accent);
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-        }
-        .auth-box .auth-switch a:hover {
-            color: var(--accent-light);
-        }
-
-        /* ===== FORMULÁRIOS ===== */
-        .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 6px;
-            color: var(--text-secondary);
-            letter-spacing: -0.2px;
-        }
-        .form-group label .required { color: #ef4444; margin-left: 2px; }
-        .form-control {
-            width: 100%;
-            padding: 14px 18px;
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius-md);
-            font-size: 14px;
-            transition: var(--transition);
-            background: rgba(255,255,255,0.03);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-primary);
-            font-weight: 400;
-        }
-        .form-control:focus {
-            border-color: rgba(212, 160, 23, 0.15);
-            outline: none;
-            background: rgba(255,255,255,0.05);
-            box-shadow: 0 0 20px rgba(212, 160, 23, 0.03);
-        }
-        .form-control::placeholder { color: var(--text-tertiary); }
-        textarea.form-control {
-            resize: vertical;
-            min-height: 80px;
-            line-height: 1.5;
-        }
-
-        /* ===== BOTÕES ===== */
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: var(--bg-primary);
-            border: none;
-            padding: 16px 32px;
-            border-radius: var(--radius-full);
-            font-weight: 800;
-            font-size: 15px;
-            width: 100%;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: -0.2px;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 32px rgba(212, 160, 23, 0.25);
-        }
-        .btn-primary:active { transform: scale(0.96); }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.05);
-            color: var(--text-primary);
-            border: 1px solid rgba(255,255,255,0.05);
-            padding: 14px 28px;
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            font-family: 'Inter', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .btn-secondary:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.08);
-            transform: translateY(-2px);
-        }
-        .btn-secondary:active { transform: scale(0.96); }
-
-        .btn-outline {
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 14px 28px;
-            border-radius: var(--radius-full);
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            color: var(--text-secondary);
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-outline:hover {
-            border-color: var(--accent);
-            color: var(--accent-light);
-            background: rgba(212, 160, 23, 0.05);
-        }
-
-        .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            border: none;
-            padding: 14px 28px;
-            border-radius: var(--radius-full);
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            font-family: 'Inter', sans-serif;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
-        }
-        .btn-danger:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
-        }
-        .btn-danger:active { transform: scale(0.96); }
-
-        /* ===== PÁGINAS ===== */
-        .page {
-            display: none;
-            padding: 16px 20px 100px;
-            animation: fadeSlideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .page.active { display: block; }
-
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(24px) scale(0.97); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* ===== SEARCH ===== */
-        .search-section {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 20px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            transition: var(--transition);
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 8px;
-            background: rgba(255,255,255,0.03);
-            border-radius: var(--radius-full);
-            padding: 4px;
-            border: 1px solid rgba(255,255,255,0.04);
-            transition: var(--transition);
-        }
-        .search-bar:focus-within {
-            border-color: rgba(212, 160, 23, 0.15);
-            background: rgba(255,255,255,0.05);
-        }
-
-        .search-bar input {
-            flex: 1;
-            padding: 12px 18px;
-            border: none;
-            background: transparent;
-            font-size: 14px;
-            font-weight: 400;
-            outline: none;
-            color: var(--text-primary);
-            font-family: 'Inter', sans-serif;
-        }
-        .search-bar input::placeholder { color: var(--text-tertiary); }
-        .search-bar button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: var(--radius-full);
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: var(--bg-primary);
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            white-space: nowrap;
-            font-family: 'Inter', sans-serif;
-        }
-        .search-bar button:hover {
-            transform: scale(1.04);
-            box-shadow: 0 4px 24px rgba(212, 160, 23, 0.25);
-        }
-        .search-bar button:active { transform: scale(0.94); }
-
-        .filter-row {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-        }
-        .filter-row select,
-        .filter-row input {
-            flex: 1;
-            padding: 10px 16px;
-            border: 1px solid rgba(255,255,255,0.04);
-            border-radius: var(--radius-full);
-            font-size: 12px;
-            font-weight: 500;
-            background: rgba(255,255,255,0.03);
-            color: var(--text-secondary);
-            transition: var(--transition);
-            font-family: 'Inter', sans-serif;
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-width='1.5' fill='none' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 14px center;
-            padding-right: 36px;
-            cursor: pointer;
-        }
-        .filter-row select:focus,
-        .filter-row input:focus {
-            border-color: rgba(212, 160, 23, 0.15);
-            outline: none;
-            background: rgba(255,255,255,0.05);
-        }
-        .filter-row select option {
-            background: var(--bg-secondary);
-            color: var(--text-primary);
-        }
-
-        .quick-filters {
-            display: flex;
-            gap: 6px;
-            margin-top: 12px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-        .quick-filters::-webkit-scrollbar { height: 2px; }
-        .quick-filters::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: var(--radius-full); }
-        .quick-filter {
-            padding: 6px 14px;
-            border-radius: var(--radius-full);
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.04);
-            font-size: 11px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            color: var(--text-tertiary);
-            white-space: nowrap;
-            font-family: 'Inter', sans-serif;
-        }
-        .quick-filter:hover {
-            background: rgba(255,255,255,0.06);
-            color: var(--text-secondary);
-        }
-        .quick-filter.active {
-            background: rgba(212, 160, 23, 0.12);
-            border-color: rgba(212, 160, 23, 0.2);
-            color: var(--accent-light);
-        }
-
-        /* ===== PROVIDER CARDS ===== */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-        .section-title {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .section-title i { color: var(--accent); font-size: 18px; }
-        .section-count {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-tertiary);
-            background: rgba(255,255,255,0.04);
-            padding: 4px 14px;
-            border-radius: var(--radius-full);
-            border: 1px solid rgba(255,255,255,0.04);
-        }
-
-        .provider-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 16px;
-            margin-bottom: 14px;
-            border: 1px solid var(--border-color);
-            transition: var(--transition-spring);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-        .provider-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-light));
-            opacity: 0;
-            transition: var(--transition);
-        }
-        .provider-card:hover {
-            transform: translateY(-4px);
-            background: var(--bg-card-hover);
-            border-color: var(--border-hover);
-            box-shadow: var(--shadow-card);
-        }
-        .provider-card:hover::before { opacity: 1; }
-        .provider-card:active { transform: scale(0.98); }
-
-        .featured-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
-            color: var(--bg-primary);
-            font-size: 8px;
-            font-weight: 800;
-            padding: 2px 10px;
-            border-radius: var(--radius-full);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .card-top {
+            background: #ffffff;
+            border-top: 1px solid #e2e8f0;
             display: flex;
-            gap: 14px;
-            align-items: flex-start;
+            justify-content: space-around;
+            padding: 8px 0 10px;
+            max-width: 480px;
+            margin: 0 auto;
+            z-index: 10;
         }
-
-        .avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: var(--radius-lg);
-            background: linear-gradient(135deg, rgba(212, 160, 23, 0.15), rgba(212, 160, 23, 0.03));
+        .bottom-nav .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: #64748b;
+            cursor: pointer;
+            padding: 4px 10px;
+            border-radius: 20px;
+            transition: 0.2s;
+        }
+        .bottom-nav .nav-item.active {
+            color: #0f2b3d;
+            font-weight: 600;
+            background: #eef2f6;
+        }
+        .bottom-nav .nav-item i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+        .card-provider {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .card-provider:hover {
+            border-color: #cbd5e1;
+        }
+        .provider-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .provider-avatar {
+            width: 56px;
+            height: 56px;
+            background: #d9e2ef;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
-            color: var(--accent);
+            font-size: 24px;
+            color: #1e3a5f;
             flex-shrink: 0;
-            position: relative;
-            border: 1px solid rgba(212, 160, 23, 0.06);
         }
-
-        .card-info { flex: 1; min-width: 0; }
-
-        .card-name-row {
+        .provider-name {
+            font-weight: 600;
+            font-size: 16px;
             display: flex;
             align-items: center;
             gap: 6px;
             flex-wrap: wrap;
         }
-        .card-name {
-            font-weight: 700;
-            font-size: 16px;
-            color: var(--text-primary);
-            letter-spacing: -0.2px;
-        }
-
-        .verified-badge {
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            font-size: 8px;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: var(--radius-full);
+        .badge-verified {
+            background: #0b7e5e;
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 30px;
+            font-weight: 500;
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            border: 1px solid rgba(16, 185, 129, 0.1);
         }
-
-        .card-category {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            margin-top: 2px;
-            font-weight: 400;
+        .badge-pending {
+            background: #94a3b8;
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 30px;
+        }
+        .provider-meta {
             display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .card-category i { color: var(--accent); font-size: 12px; }
-
-        .card-rating {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 4px;
-        }
-        .stars { color: var(--accent); font-size: 13px; letter-spacing: 1px; }
-        .rating-value {
-            font-weight: 700;
+            justify-content: space-between;
+            margin-top: 10px;
             font-size: 13px;
-            color: var(--text-primary);
+            color: #334155;
         }
-        .rating-count {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            font-weight: 400;
+        .provider-meta i {
+            color: #2b7a62;
+            width: 18px;
         }
-
-        .card-photos {
-            display: flex;
-            gap: 8px;
-            margin: 12px 0 10px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            scroll-snap-type: x mandatory;
-        }
-        .card-photos::-webkit-scrollbar { height: 2px; }
-        .card-photos::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: var(--radius-full); }
-        .photo-thumb {
-            width: 76px;
-            height: 76px;
-            border-radius: var(--radius-md);
-            object-fit: cover;
-            border: 1px solid rgba(255,255,255,0.04);
-            scroll-snap-align: start;
-            transition: var(--transition);
-        }
-        .photo-thumb:hover {
-            transform: scale(1.04);
-            border-color: rgba(212, 160, 23, 0.15);
-        }
-        .photo-placeholder {
-            width: 76px;
-            height: 76px;
-            border-radius: var(--radius-md);
-            background: rgba(255,255,255,0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-tertiary);
-            font-size: 11px;
-            border: 1px dashed rgba(255,255,255,0.04);
-            flex-shrink: 0;
-            font-weight: 400;
-            gap: 4px;
-            flex-direction: column;
-        }
-        .photo-placeholder i { font-size: 20px; color: var(--text-tertiary); }
-
-        .card-description {
+        .provider-rating {
+            background: #f1f5f9;
+            padding: 2px 10px;
+            border-radius: 30px;
+            font-weight: 500;
             font-size: 13px;
-            color: var(--text-secondary);
-            line-height: 1.5;
-            margin: 4px 0 8px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
         }
-
-        .card-footer {
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #1e293b;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d9e6;
+            border-radius: 12px;
+            font-size: 15px;
+            background: #ffffff;
+            transition: 0.2s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #2b7a62;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(43, 122, 98, 0.15);
+        }
+        .btn-primary {
+            background: #0f2b3d;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-primary:hover {
+            background: #1a3f55;
+            transform: scale(0.98);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-success {
+            background: #0b7e5e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-danger {
+            background: #dc2626;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .hidden {
+            display: none !important;
+        }
+        .flex {
+            display: flex;
+        }
+        .flex-between {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(255,255,255,0.03);
         }
-        .card-price {
-            font-weight: 800;
-            font-size: 20px;
-            color: var(--accent-light);
-            letter-spacing: -0.5px;
-        }
-        .card-price small {
-            font-weight: 400;
-            font-size: 12px;
-            color: var(--text-tertiary);
-        }
-        .card-distance {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-weight: 400;
-            background: rgba(255,255,255,0.03);
-            padding: 4px 12px;
-            border-radius: var(--radius-full);
-            border: 1px solid rgba(255,255,255,0.03);
-        }
-        .card-distance i { color: var(--accent); }
-
-        .card-meta {
-            display: flex;
-            gap: 12px;
-            margin-top: 8px;
-            font-size: 11px;
-            color: var(--text-tertiary);
-            flex-wrap: wrap;
-        }
-        .card-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .card-meta i { font-size: 11px; color: var(--text-tertiary); }
-
-        /* ===== REPORT SECTION ===== */
-        .report-section {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            margin-bottom: 20px;
-        }
-
-        .report-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .report-header i {
-            font-size: 32px;
-            color: var(--error);
-        }
-        .report-header h4 {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .report-header .report-sub {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            font-weight: 400;
-        }
-
-        .report-types {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
+        .gap-8 {
             gap: 8px;
-            margin: 12px 0 16px;
         }
-        .report-type {
-            padding: 12px 8px;
-            border-radius: var(--radius-md);
-            border: 2px solid rgba(255,255,255,0.04);
-            background: rgba(255,255,255,0.02);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-tertiary);
+        .mt-8 {
+            margin-top: 8px;
         }
-        .report-type i {
-            font-size: 20px;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .report-type:hover {
-            border-color: rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.04);
-        }
-        .report-type.active {
-            border-color: var(--error);
-            background: var(--error-bg);
-            color: var(--error);
-        }
-        .report-type.active i { color: var(--error); }
-
-        .whatsapp-preview {
-            background: rgba(37, 211, 102, 0.05);
-            border: 1px solid rgba(37, 211, 102, 0.1);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin: 12px 0;
-        }
-        .whatsapp-preview .preview-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #25D366;
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-        .whatsapp-preview .preview-header i {
-            font-size: 20px;
-        }
-        .whatsapp-preview .preview-content {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-family: 'Courier New', monospace;
-            background: rgba(0,0,0,0.2);
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            white-space: pre-wrap;
-            word-break: break-word;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .whatsapp-preview .preview-content .highlight {
-            color: var(--accent-light);
-        }
-
-        .report-actions {
-            display: flex;
-            gap: 10px;
+        .mt-16 {
             margin-top: 16px;
         }
-        .report-actions .btn-danger { flex: 1; }
-        .report-actions .btn-outline { flex: 0.6; }
-
-        /* ===== PERFIL ===== */
-        .profile-card {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 24px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
+        .mb-8 {
+            margin-bottom: 8px;
         }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(212, 160, 23, 0.15), rgba(212, 160, 23, 0.03));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: var(--accent);
-            margin: 0 auto 14px;
-            border: 1px solid rgba(212, 160, 23, 0.06);
-        }
-        .profile-name {
-            text-align: center;
-            font-size: 22px;
-            font-weight: 800;
-            letter-spacing: -0.5px;
-        }
-        .profile-role {
-            text-align: center;
-            color: var(--text-tertiary);
-            font-weight: 400;
+        .text-muted {
+            color: #64748b;
             font-size: 14px;
-            margin-bottom: 16px;
         }
-
-        .profile-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
+        .text-center {
+            text-align: center;
+        }
+        .whatsapp-notice {
+            background: #e6f7f0;
+            border-left: 4px solid #0b7e5e;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 14px;
             margin: 16px 0;
         }
-        .stat-item {
-            background: rgba(255,255,255,0.03);
+        .whatsapp-notice i {
+            color: #25D366;
+            margin-right: 8px;
+        }
+        .chat-messages {
+            max-height: 280px;
+            overflow-y: auto;
+            background: #f8fafc;
+            border-radius: 16px;
             padding: 12px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.03);
-            transition: var(--transition);
+            margin: 10px 0;
+            border: 1px solid #e9edf2;
         }
-        .stat-item:hover {
-            border-color: rgba(212, 160, 23, 0.08);
+        .msg {
+            padding: 8px 14px;
+            border-radius: 18px;
+            margin-bottom: 8px;
+            max-width: 80%;
+            font-size: 14px;
         }
-        .stat-item .stat-value {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text-primary);
+        .msg-client {
+            background: #d9e2ef;
+            align-self: flex-start;
         }
-        .stat-item .stat-label {
-            font-size: 10px;
-            color: var(--text-tertiary);
-            font-weight: 600;
-            margin-top: 2px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+        .msg-provider {
+            background: #0f2b3d;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
         }
-
-        .profile-status {
+        .msg-admin {
+            background: #dc2626;
+            color: white;
+            align-self: flex-start;
+        }
+        .chat-input-area {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 12px 0;
+            gap: 8px;
+            margin-top: 6px;
         }
-
-        /* ===== TOAST ===== */
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 14px;
+            border: 1px solid #d1d9e6;
+            border-radius: 40px;
+            font-size: 14px;
+        }
+        .chat-input-area button {
+            background: #0f2b3d;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0 20px;
+            font-weight: 600;
+        }
+        .rating-stars i {
+            color: #d1d5db;
+            font-size: 28px;
+            cursor: pointer;
+            transition: 0.1s;
+            margin-right: 4px;
+        }
+        .rating-stars i.active {
+            color: #facc15;
+        }
         .toast {
             position: fixed;
             bottom: 100px;
             left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            background: rgba(12, 8, 24, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: var(--radius-lg);
-            padding: 14px 24px;
-            color: var(--text-primary);
-            font-size: 13px;
+            transform: translateX(-50%);
+            background: #0f2b3d;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
             font-weight: 500;
-            z-index: 60;
-            opacity: 0;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            pointer-events: none;
+            z-index: 30;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             max-width: 90%;
             text-align: center;
-            box-shadow: var(--shadow-elevated);
         }
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
+        .admin-panel {
+            background: #f1f5f9;
+            border-radius: 16px;
+            padding: 16px;
+            margin: 16px 0;
         }
-        .toast i { margin-right: 8px; }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            padding: 60px 20px;
+        .admin-panel h4 {
+            color: #0f2b3d;
+            margin-bottom: 12px;
         }
-        .empty-state i {
-            font-size: 64px;
-            color: var(--text-tertiary);
-            margin-bottom: 16px;
-            opacity: 0.3;
+        .admin-user-item {
+            background: white;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #e2e8f0;
         }
-        .empty-state h4 {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-secondary);
+        .admin-user-item .online {
+            color: #0b7e5e;
         }
-        .empty-state p {
-            color: var(--text-tertiary);
-            margin-top: 4px;
-            font-weight: 400;
+        .admin-user-item .offline {
+            color: #94a3b8;
         }
-
-        .text-muted { color: var(--text-tertiary); font-size: 13px; }
-        .text-sm { font-size: 12px; }
-        .text-center { text-align: center; }
-        .mt-8 { margin-top: 8px; }
-        .mt-16 { margin-top: 16px; }
-        .mb-8 { margin-bottom: 8px; }
-        .mb-16 { margin-bottom: 16px; }
-        .gap-8 { gap: 8px; }
-        .gap-12 { gap: 12px; }
-        .flex { display: flex; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; }
-        .w-full { width: 100%; }
-
-        ::-webkit-scrollbar { width: 4px; height: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: var(--radius-full); }
-
-        @media (max-width: 480px) {
-            .app { max-width: 100%; }
-            .bottom-nav { max-width: calc(100% - 16px); bottom: 12px; padding: 4px 6px; }
-            .nav-item { padding: 6px 10px; min-width: 44px; }
-            .nav-item i { font-size: 18px; }
-            .nav-item span { font-size: 8px; }
-            .filter-row { flex-direction: column; }
-            .report-types { grid-template-columns: 1fr 1fr; }
-            .profile-stats { grid-template-columns: 1fr 1fr; }
-            .auth-box { padding: 24px 16px; }
-            .header { padding: 16px 16px 12px; }
-            .page { padding: 12px 16px 100px; }
+        .provider-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
         }
-        @media (min-width: 768px) {
-            body {
-                background: radial-gradient(ellipse at center, #0a0612, #040208);
-            }
-            .app {
-                margin: 20px auto;
-                border-radius: var(--radius-2xl);
-                box-shadow: var(--shadow-elevated);
-                min-height: 90vh;
-                max-height: 95vh;
-                overflow-y: auto;
-                background: rgba(10, 6, 18, 0.6);
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255,255,255,0.03);
+        .provider-actions button {
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: none;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .approve-btn {
+            background: #0b7e5e;
+            color: white;
+        }
+        .reject-btn {
+            background: #dc2626;
+            color: white;
+        }
+        .admin-chat-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .admin-chat-item {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 6px;
+            border: 1px solid #e2e8f0;
+            cursor: pointer;
+        }
+        .admin-chat-item:hover {
+            background: #f8fafc;
+        }
+        @media (min-width: 640px) {
+            .app-container {
+                max-width: 600px;
+                padding: 24px;
             }
             .bottom-nav {
-                border-radius: var(--radius-xl);
-                max-width: 400px;
+                max-width: 600px;
             }
         }
     </style>
 </head>
 <body>
-
-<!-- ===== LOADING ===== -->
-<div class="app-loading" id="appLoading">
-    <div class="spinner"></div>
-    <div class="loading-text">A carregar Salo Urgente...</div>
-</div>
-
-<!-- ===== BACKGROUND ===== -->
-<div class="bg-effects">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
-    <div class="orb orb-3"></div>
-</div>
-
-<!-- ===== TOAST ===== -->
-<div class="toast" id="toast"></div>
-
-<!-- ===== APP ===== -->
-<div class="app" id="app">
-    <!-- ===== HEADER ===== -->
-    <header class="header" id="appHeader">
-        <div class="header-top">
+    <div class="app-container" id="app">
+        <!-- HEADER -->
+        <div class="header">
             <div class="logo">
-                <i class="fas fa-bolt"></i>
-                <div>
-                    <span class="logo-text">Salo Urgente</span>
-                    <span class="logo-sub">Angola</span>
-                </div>
+                <i class="fas fa-tools"></i> ServiçoLocal
+                <span id="adminBadge" class="admin-badge hidden">ADMIN</span>
             </div>
             <div class="header-actions">
-                <button class="header-btn" onclick="showPage('perfil')" title="Perfil">
-                    <i class="fas fa-user-circle"></i>
-                </button>
-            </div>
-        </div>
-        <div class="header-greeting">
-            👋 Olá, <strong id="greetingName">Visitante</strong>
-            <span class="logout-link" onclick="logoutUser()">Sair</span>
-        </div>
-    </header>
-
-    <!-- ===== AUTH SCREEN ===== -->
-    <div class="auth-screen active" id="authScreen">
-        <div class="auth-box">
-            <div class="auth-logo">
-                <i class="fas fa-bolt"></i>
-                <h1>Salo Urgente</h1>
-                <p>Angola</p>
-            </div>
-            
-            <div id="authForm">
-                <div class="form-group">
-                    <label>Email <span class="required">*</span></label>
-                    <input class="form-control" id="authEmail" placeholder="seu@email.com" type="email" />
-                </div>
-                <div class="form-group">
-                    <label>Palavra-passe <span class="required">*</span></label>
-                    <input class="form-control" id="authPassword" placeholder="••••••••" type="password" />
-                </div>
-                <button class="btn-primary" id="authBtn" onclick="handleAuth()">
-                    <i class="fas fa-sign-in-alt"></i> Entrar
-                </button>
-                <div class="auth-switch">
-                    <span id="authSwitchText">Não tem conta?</span>
-                    <a id="authSwitchLink" onclick="toggleAuthMode()">Criar conta</a>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== PÁGINA INÍCIO ===== -->
-    <div class="page" id="page-inicio">
-        <div class="search-section">
-            <div class="search-bar">
-                <input id="searchInput" placeholder="🔍 O que precisa?" />
-                <button onclick="searchProviders()"><i class="fas fa-search"></i> Buscar</button>
-            </div>
-            <div class="filter-row">
-                <select id="categoryFilter">
-                    <option value="">📋 Todas as categorias</option>
-                    <option value="Eletricista">⚡ Eletricista</option>
-                    <option value="Canalizador">🔧 Canalizador</option>
-                    <option value="Pintor">🎨 Pintor</option>
-                    <option value="Jardinagem">🌿 Jardinagem</option>
-                    <option value="Limpeza">🧹 Limpeza</option>
-                    <option value="Marcenaria">🪚 Marcenaria</option>
-                    <option value="Tecnologia">💻 Tecnologia</option>
-                    <option value="Construção">🏗️ Construção</option>
-                    <option value="Motorista">🚗 Motorista</option>
-                    <option value="Cozinheiro">🍳 Cozinheiro</option>
-                    <option value="Costureiro">🧵 Costureiro</option>
-                    <option value="Mecânico">🔩 Mecânico</option>
-                    <option value="Serralheiro">🔨 Serralheiro</option>
-                    <option value="Pedreiro">🧱 Pedreiro</option>
-                    <option value="Carpinteiro">🪵 Carpinteiro</option>
-                    <option value="Vidraceiro">🪟 Vidraceiro</option>
-                    <option value="Chaveiro">🔑 Chaveiro</option>
-                    <option value="Sapateiro">👞 Sapateiro</option>
-                    <option value="Eletrónica">📱 Eletrónica</option>
-                    <option value="Refrigeração">❄️ Refrigeração</option>
-                    <option value="Fotografia">📸 Fotografia</option>
-                    <option value="Eventos">🎉 Eventos</option>
-                    <option value="Tradução">🌍 Tradução</option>
-                </select>
-                <input id="locationInput" placeholder="📍 Sua localização" />
-            </div>
-            <div class="quick-filters" id="quickFilters">
-                <span class="quick-filter active" onclick="quickFilter(this,'')">🌟 Todos</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Eletricista')">⚡</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Canalizador')">🔧</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Pintor')">🎨</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Jardinagem')">🌿</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Limpeza')">🧹</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Tecnologia')">💻</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Motorista')">🚗</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Construção')">🏗️</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Mecânico')">🔩</span>
+                <i class="fas fa-user-circle" onclick="showTab('perfil')"></i>
+                <i class="fas fa-sign-out-alt" onclick="logout()" id="logoutBtn" style="display:none;"></i>
             </div>
         </div>
 
-        <div class="section-header">
-            <span class="section-title"><i class="fas fa-star"></i> Prestadores</span>
-            <span class="section-count" id="resultCount">0</span>
-        </div>
-        <div id="providerList">
-            <div class="text-center" style="padding:40px 0;color:var(--text-tertiary);">
-                <i class="fas fa-spinner fa-spin" style="font-size:32px;"></i>
-                <p style="margin-top:12px;">A carregar prestadores...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== PÁGINA REPORT ===== -->
-    <div class="page" id="page-report">
-        <h3 style="font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">
-            <i class="fas fa-flag" style="color:var(--error);"></i> Reportar Problema
-        </h3>
-        <p class="text-muted" style="margin-bottom:22px;">Ajude-nos a melhorar reportando situações que necessitam de atenção</p>
-
-        <div class="report-section">
-            <div class="report-header">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                    <h4>Reporte um problema</h4>
-                    <div class="report-sub">Selecione o tipo de problema e descreva a situação</div>
+        <!-- PÁGINAS -->
+        <div id="pageContent">
+            <!-- HOME -->
+            <div id="homePage">
+                <div class="flex gap-8" style="margin: 12px 0 16px;">
+                    <input type="text" id="searchInput" placeholder="Buscar serviço..." style="flex:1; padding:12px 16px; border-radius:40px; border:1px solid #d1d9e6; font-size:15px;" />
+                    <button class="btn-primary" style="width:auto; padding:0 20px;" onclick="searchProviders()"><i class="fas fa-search"></i></button>
                 </div>
+                <div class="flex gap-8" style="margin-bottom:12px;">
+                    <select id="categoryFilter" style="flex:1; padding:10px 14px; border-radius:40px; border:1px solid #d1d9e6;">
+                        <option value="">Todas</option>
+                        <option value="Eletricista">Eletricista</option>
+                        <option value="Encanador">Encanador</option>
+                        <option value="Pintor">Pintor</option>
+                        <option value="Jardinagem">Jardinagem</option>
+                        <option value="Limpeza">Limpeza</option>
+                        <option value="Marcenaria">Marcenaria</option>
+                    </select>
+                    <input type="text" id="locationFilter" placeholder="Localização" style="flex:1; padding:10px 14px; border-radius:40px; border:1px solid #d1d9e6;" />
+                </div>
+                <div id="providerList"></div>
             </div>
 
-            <div class="report-types" id="reportTypes">
-                <div class="report-type" data-type="fraude" onclick="selectReportType(this)">
-                    <i class="fas fa-user-slash"></i>
-                    Fraude
+            <!-- LOGIN / CADASTRO -->
+            <div id="authPage" class="hidden">
+                <h3 style="margin:16px 0;" id="authTitle">Entrar</h3>
+                <div id="authForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="authEmail" placeholder="seu@email.com" value="admin.yacm@gmail.com" />
+                    </div>
+                    <div class="form-group">
+                        <label>Palavra-passe</label>
+                        <input type="password" id="authPassword" placeholder="******" />
+                    </div>
+                    <button class="btn-primary" onclick="handleAuth()" id="authButton">Entrar</button>
+                    <p style="text-align:center;margin-top:12px;">
+                        <span id="authSwitchText">Não tem conta?</span>
+                        <a href="#" onclick="toggleAuthMode()" id="authSwitchLink">Criar conta</a>
+                    </p>
                 </div>
-                <div class="report-type" data-type="mau_atendimento" onclick="selectReportType(this)">
-                    <i class="fas fa-times-circle"></i>
-                    Mau atendimento
-                </div>
-                <div class="report-type" data-type="preco_abusivo" onclick="selectReportType(this)">
-                    <i class="fas fa-money-bill-wave"></i>
-                    Preço abusivo
-                </div>
-                <div class="report-type" data-type="cancelamento" onclick="selectReportType(this)">
-                    <i class="fas fa-calendar-times"></i>
-                    Cancelamento
-                </div>
-                <div class="report-type" data-type="qualidade" onclick="selectReportType(this)">
-                    <i class="fas fa-star-half-alt"></i>
-                    Má qualidade
-                </div>
-                <div class="report-type" data-type="outro" onclick="selectReportType(this)">
-                    <i class="fas fa-ellipsis-h"></i>
-                    Outro
+                <div class="whatsapp-notice">
+                    <i class="fab fa-whatsapp"></i> Prestadores: após cadastro, enviamos notificação real para <strong>+244 923 529 486</strong>
                 </div>
             </div>
 
-            <div class="report-form" id="reportForm">
-                <div class="form-group">
-                    <label>Prestador envolvido <span class="required">*</span></label>
-                    <select class="form-control" id="reportProvider">
-                        <option value="">Selecione um prestador...</option>
+            <!-- CADASTRO PRESTADOR (pós-login) -->
+            <div id="registerPage" class="hidden">
+                <h3 style="margin:16px 0;">Complete seu cadastro</h3>
+                <div class="form-group"><label>Nome completo</label><input id="regName" placeholder="Seu nome" /></div>
+                <div class="form-group"><label>Categoria</label>
+                    <select id="regCategory">
+                        <option>Eletricista</option><option>Encanador</option><option>Pintor</option>
+                        <option>Jardinagem</option><option>Limpeza</option><option>Marcenaria</option>
                     </select>
                 </div>
+                <div class="form-group"><label>Área de atendimento</label><input id="regArea" placeholder="Bairro, cidade" /></div>
+                <div class="form-group"><label>Descrição</label><textarea id="regDesc" placeholder="Descreva seus serviços..."></textarea></div>
+                <div class="form-group"><label>Preço médio (R$)</label><input id="regPrice" type="number" placeholder="70" /></div>
+                <div class="form-group"><label>Fotos (URLs separadas por vírgula)</label><input id="regPhotos" placeholder="https://exemplo.com/foto1.jpg" /></div>
+                <button class="btn-primary" onclick="registerProvider()">Cadastrar como Prestador</button>
+                <button class="btn-outline mt-8" style="width:100%;" onclick="skipRegistration()">Pular (só cliente)</button>
+            </div>
 
-                <div class="form-group">
-                    <label>Descrição do problema <span class="required">*</span></label>
-                    <textarea class="form-control" id="reportDescription" placeholder="Descreva detalhadamente o que aconteceu..."></textarea>
+            <!-- CHAT -->
+            <div id="chatPage" class="hidden">
+                <h3 style="margin:8px 0;"><i class="fas fa-comment-dots"></i> Chat</h3>
+                <div id="chatProviderName" style="font-weight:500; margin-bottom:6px;">Selecione um prestador</div>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="text-muted">Inicie uma conversa...</div>
                 </div>
-
-                <div class="form-group">
-                    <label>Seu contacto (opcional)</label>
-                    <input class="form-control" id="reportContact" placeholder="Número de telefone ou email" />
-                    <div class="text-muted text-sm" style="margin-top:4px;">Deixe o seu contacto se desejar ser contactado pela equipa</div>
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Digite sua mensagem..." />
+                    <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
                 </div>
+                <button class="btn-primary mt-8" style="background:#2b7a62;" onclick="closeService()">Fechar serviço e avaliar</button>
+            </div>
 
-                <div class="whatsapp-preview">
-                    <div class="preview-header">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>Pré-visualização da mensagem WhatsApp</span>
-                    </div>
-                    <div class="preview-content" id="whatsappPreview">
-                        <span class="highlight">📢 NOVO REPORTE DE PROBLEMA</span>
-                        <span>Tipo: <span id="previewType">Não selecionado</span></span>
-                        <span>Prestador: <span id="previewProvider">Não selecionado</span></span>
-                        <span>Descrição: <span id="previewDescription">Aguardando descrição...</span></span>
-                        <span>Contacto: <span id="previewContact">Não fornecido</span></span>
-                        <span>Data: <span id="previewDate"></span></span>
-                    </div>
+            <!-- PERFIL -->
+            <div id="profilePage" class="hidden">
+                <h3><i class="fas fa-user-circle"></i> Meu Perfil</h3>
+                <div id="profileContent"></div>
+            </div>
+
+            <!-- ADMIN PANEL -->
+            <div id="adminPage" class="hidden">
+                <h3><i class="fas fa-shield-alt"></i> Painel Administrativo</h3>
+                <div class="admin-panel">
+                    <h4>📊 Usuários Online</h4>
+                    <div id="adminUsersList"></div>
                 </div>
-
-                <div class="report-actions">
-                    <button class="btn-danger" onclick="sendReport()">
-                        <i class="fab fa-whatsapp"></i> Enviar via WhatsApp
-                    </button>
-                    <button class="btn-outline" onclick="clearReport()">Limpar</button>
+                <div class="admin-panel">
+                    <h4>📋 Prestadores Pendentes</h4>
+                    <div id="adminPendingProviders"></div>
+                </div>
+                <div class="admin-panel">
+                    <h4>💬 Todas as Conversas</h4>
+                    <div id="adminChatsList" class="admin-chat-list"></div>
+                </div>
+                <div class="admin-panel">
+                    <h4>📈 Estatísticas</h4>
+                    <div id="adminStats"></div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- ===== PÁGINA PERFIL ===== -->
-    <div class="page" id="page-perfil">
-        <h3 style="font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">
-            <i class="fas fa-user-circle" style="color:var(--accent);"></i> Meu Perfil
-        </h3>
-        <div id="profileContent">
-            <div class="profile-card">
-                <div class="profile-avatar"><i class="fas fa-user"></i></div>
-                <div class="profile-name">Visitante</div>
-                <div class="profile-role">👤 Utilizador</div>
-                <div style="text-align:center;padding:12px 0;">
-                    <button class="btn-secondary" onclick="showPage('report')">
-                        <i class="fas fa-flag"></i> Reportar Problema
-                    </button>
+        <!-- NAVEGAÇÃO INFERIOR -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showTab('home')" id="navHome"><i class="fas fa-home"></i><span>Início</span></div>
+            <div class="nav-item" onclick="showTab('auth')" id="navAuth"><i class="fas fa-user-plus"></i><span>Entrar</span></div>
+            <div class="nav-item" onclick="showTab('chat')" id="navChat"><i class="fas fa-comment"></i><span>Chat</span></div>
+            <div class="nav-item" onclick="showTab('perfil')" id="navProfile"><i class="fas fa-star"></i><span>Perfil</span></div>
+            <div class="nav-item hidden" onclick="showTab('admin')" id="navAdmin"><i class="fas fa-shield-alt"></i><span>Admin</span></div>
+        </div>
+
+        <!-- MODAL AVALIAÇÃO -->
+        <div id="ratingModal" class="hidden" style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; z-index:20; padding:20px;">
+            <div style="background:white; max-width:400px; width:100%; border-radius:28px; padding:24px;">
+                <h4>Avaliar prestador</h4>
+                <div class="rating-stars" id="ratingStars">
+                    <i class="fas fa-star" data-val="1"></i>
+                    <i class="fas fa-star" data-val="2"></i>
+                    <i class="fas fa-star" data-val="3"></i>
+                    <i class="fas fa-star" data-val="4"></i>
+                    <i class="fas fa-star" data-val="5"></i>
+                </div>
+                <textarea id="ratingComment" placeholder="Comentário (opcional)" style="width:100%; padding:10px; border-radius:12px; border:1px solid #d1d9e6; margin:12px 0;"></textarea>
+                <div class="flex gap-8">
+                    <button class="btn-primary" style="flex:1;" onclick="submitRating()">Enviar</button>
+                    <button class="btn-outline" style="flex:1;" onclick="closeRatingModal()">Cancelar</button>
                 </div>
             </div>
         </div>
+
+        <!-- TOAST -->
+        <div id="toast" class="toast hidden"></div>
     </div>
 
-    <!-- ===== BOTTOM NAV ===== -->
-    <nav class="bottom-nav" id="bottomNav">
-        <button class="nav-item active" onclick="showPage('inicio')" id="nav-inicio">
-            <i class="fas fa-home"></i>
-            <span>Início</span>
-        </button>
-        <button class="nav-item" onclick="showPage('report')" id="nav-report">
-            <i class="fas fa-flag"></i>
-            <span>Reportar</span>
-        </button>
-        <button class="nav-item" onclick="showPage('perfil')" id="nav-perfil">
-            <i class="fas fa-user"></i>
-            <span>Perfil</span>
-        </button>
-    </nav>
-</div>
+    <!-- ===== FIREBASE ===== -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<script>
-// ============================================================
-// FIREBASE CONFIG (direto no script para compatibilidade)
-// ============================================================
-const firebaseConfig = {
-    apiKey: "AIzaSyArTnfdLQ21V8kDu3o7jJd1ZV4IbpIU6qY",
-    authDomain: "salo-urgente.firebaseapp.com",
-    projectId: "salo-urgente",
-    storageBucket: "salo-urgente.firebasestorage.app",
-    messagingSenderId: "748135559737",
-    appId: "1:748135559737:web:6950f8290c9ab3b9f353e8",
-    measurementId: "G-ZT3L8299G1"
-};
+    <script>
+        // ===== CONFIGURAÇÃO FIREBASE =====
+        // ⚠️ SUBSTITUA COM SUAS CREDENCIAIS REAIS
+        const firebaseConfig = {
+            apiKey: "AIzaSyDemoKeyNaoUseEsta",
+            authDomain: "seu-projeto.firebaseapp.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef"
+        };
 
-// ============================================================
-// INICIALIZAR FIREBASE (compatível com GitHub Pages)
-// ============================================================
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-// ============================================================
-// VARIÁVEIS GLOBAIS
-// ============================================================
-let currentUser = null;
-let currentUserData = null;
-let providers = [];
-let favorites = [];
-let selectedReportType = null;
-let isAuthMode = 'login';
+        // ===== CONSTANTES =====
+        const ADMIN_EMAIL = "admin.yacm@gmail.com";
+        const WHATSAPP_NUMBER = "244923529486"; // Número real para notificações
 
-const WHATSAPP_NUMBER = '244923529486';
+        // ===== ESTADO =====
+        let currentUser = null;
+        let currentUserData = null;
+        let isAdmin = false;
+        let selectedProviderId = null;
+        let ratingProviderId = null;
+        let isLoginMode = true;
+        let onlineUsers = {};
+        let adminChatView = null;
 
-const reportTypes = {
-    'fraude': '🚨 Fraude / Engano',
-    'mau_atendimento': '😤 Mau Atendimento',
-    'preco_abusivo': '💰 Preço Abusivo',
-    'cancelamento': '❌ Cancelamento Indevido',
-    'qualidade': '⭐ Má Qualidade do Serviço',
-    'outro': '📌 Outro Problema'
-};
-
-// ============================================================
-// TOAST
-// ============================================================
-function showToast(message, icon = 'fa-check-circle') {
-    const toast = document.getElementById('toast');
-    toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
-    toast.classList.add('show');
-    clearTimeout(toast._timeout);
-    toast._timeout = setTimeout(() => toast.classList.remove('show'), 3000);
-}
-
-// ============================================================
-// AUTH
-// ============================================================
-function toggleAuthMode() {
-    isAuthMode = isAuthMode === 'login' ? 'register' : 'login';
-    const btn = document.getElementById('authBtn');
-    const switchText = document.getElementById('authSwitchText');
-    const switchLink = document.getElementById('authSwitchLink');
-    
-    if (isAuthMode === 'login') {
-        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
-        switchText.textContent = 'Não tem conta?';
-        switchLink.textContent = 'Criar conta';
-    } else {
-        btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar conta';
-        switchText.textContent = 'Já tem conta?';
-        switchLink.textContent = 'Entrar';
-    }
-}
-
-function handleAuth() {
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value.trim();
-    
-    if (!email || !password) {
-        showToast('Preencha todos os campos', 'fa-exclamation-circle');
-        return;
-    }
-    
-    const btn = document.getElementById('authBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> A processar...';
-    
-    if (isAuthMode === 'login') {
-        auth.signInWithEmailAndPassword(email, password)
-            .then(result => {
-                showToast('Bem-vindo de volta!', 'fa-check-circle');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
-            })
-            .catch(error => {
-                showToast('Erro: ' + error.message, 'fa-exclamation-circle');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
-            });
-    } else {
-        auth.createUserWithEmailAndPassword(email, password)
-            .then(result => {
-                showToast('Conta criada com sucesso!', 'fa-check-circle');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar conta';
-            })
-            .catch(error => {
-                showToast('Erro: ' + error.message, 'fa-exclamation-circle');
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar conta';
-            });
-    }
-}
-
-function logoutUser() {
-    auth.signOut().then(() => {
-        showToast('Sessão terminada', 'fa-sign-out-alt');
-    });
-}
-
-// ============================================================
-// AUTH STATE
-// ============================================================
-auth.onAuthStateChanged(user => {
-    const loading = document.getElementById('appLoading');
-    loading.classList.add('hidden');
-    
-    if (user) {
-        currentUser = user;
-        document.getElementById('authScreen').classList.remove('active');
-        document.getElementById('appHeader').style.display = 'block';
-        document.getElementById('bottomNav').style.display = 'flex';
-        document.getElementById('greetingName').textContent = user.email?.split('@')[0] || 'Utilizador';
-        
-        loadUserData(user.uid);
-        loadProviders();
-        loadFavorites(user.uid);
-        showPage('inicio');
-    } else {
-        currentUser = null;
-        currentUserData = null;
-        document.getElementById('authScreen').classList.add('active');
-        document.getElementById('appHeader').style.display = 'none';
-        document.getElementById('bottomNav').style.display = 'none';
-    }
-});
-
-// ============================================================
-// USER DATA
-// ============================================================
-function loadUserData(uid) {
-    db.collection('users').doc(uid).get()
-        .then(doc => {
-            if (doc.exists) {
-                currentUserData = doc.data();
-                document.getElementById('greetingName').textContent = currentUserData.name || currentUser.email?.split('@')[0] || 'Utilizador';
-            } else {
-                db.collection('users').doc(uid).set({
-                    email: currentUser.email,
-                    type: 'cliente',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                currentUserData = { email: currentUser.email, type: 'cliente' };
-            }
-            renderProfile();
-        })
-        .catch(error => console.error('Erro ao carregar dados:', error));
-}
-
-// ============================================================
-// PROVIDERS
-// ============================================================
-function loadProviders() {
-    db.collection('providers')
-        .orderBy('rating', 'desc')
-        .get()
-        .then(snapshot => {
-            providers = [];
-            snapshot.forEach(doc => {
-                providers.push({ id: doc.id, ...doc.data() });
-            });
-            populateProviderSelect();
-            searchProviders();
-        })
-        .catch(error => {
-            console.error('Erro ao carregar prestadores:', error);
-            showToast('Erro ao carregar prestadores', 'fa-exclamation-circle');
-        });
-}
-
-function searchProviders() {
-    const search = document.getElementById('searchInput').value.toLowerCase().trim();
-    const category = document.getElementById('categoryFilter').value;
-    const location = document.getElementById('locationInput').value.toLowerCase().trim();
-
-    let filtered = providers.filter(p => {
-        if (search && !p.name?.toLowerCase().includes(search) && !p.description?.toLowerCase().includes(search)) return false;
-        if (category && p.category !== category) return false;
-        if (location && !p.area?.toLowerCase().includes(location)) return false;
-        return true;
-    });
-
-    filtered.sort((a, b) => {
-        if (a.featured && !b.featured) return -1;
-        if (!a.featured && b.featured) return 1;
-        if (a.kycStatus === 'approved' && b.kycStatus !== 'approved') return -1;
-        if (a.kycStatus !== 'approved' && b.kycStatus === 'approved') return 1;
-        if (a.verified && !b.verified) return -1;
-        if (!a.verified && b.verified) return 1;
-        return (b.rating || 0) - (a.rating || 0);
-    });
-
-    renderProviders(filtered);
-}
-
-function renderProviders(list) {
-    const container = document.getElementById('providerList');
-    const count = document.getElementById('resultCount');
-
-    if (!list || list.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <i class="fas fa-search"></i>
-                <h4>Nenhum prestador encontrado</h4>
-                <p>Tente ajustar os filtros ou ampliar a busca</p>
-            </div>
-        `;
-        count.textContent = '0';
-        return;
-    }
-
-    count.textContent = list.length;
-
-    let html = '';
-    list.forEach(p => {
-        const isFavorite = favorites.includes(p.id);
-        const verified = p.verified
-            ? `<span class="verified-badge"><i class="fas fa-check-circle"></i> Verificado</span>`
-            : `<span class="pending-badge"><i class="fas fa-clock"></i> Pendente</span>`;
-
-        const fullStars = Math.floor(p.rating || 0);
-        let starsHtml = '';
-        for (let i = 0; i < 5; i++) {
-            starsHtml += i < fullStars ? '★' : '☆';
+        // ===== TOAST =====
+        function showToast(msg) {
+            const el = document.getElementById('toast');
+            el.textContent = msg;
+            el.classList.remove('hidden');
+            clearTimeout(el._timeout);
+            el._timeout = setTimeout(() => el.classList.add('hidden'), 5000);
         }
 
-        const photosHtml = p.photos && p.photos.length > 0
-            ? p.photos.map(f => `<img class="photo-thumb" src="${f}" alt="foto" onerror="this.style.display='none'" />`).join('')
-            : `<div class="photo-placeholder"><i class="fas fa-camera"></i> Sem fotos</div>`;
+        // ===== NOTIFICAÇÃO WHATSAPP REAL =====
+        function sendWhatsAppNotification(message) {
+            // Usa a API do WhatsApp (wa.me) para abrir o chat
+            const encoded = encodeURIComponent(message);
+            const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encoded}`;
+            
+            // Abre em nova janela (ou aba)
+            window.open(url, '_blank');
+            
+            // Também registra no console para debug
+            console.log(`📲 WhatsApp para +${WHATSAPP_NUMBER}: ${message}`);
+            
+            // Salva no Firestore como notificação enviada
+            if (currentUser) {
+                db.collection('notifications').add({
+                    to: WHATSAPP_NUMBER,
+                    message: message,
+                    from: currentUser.uid,
+                    fromEmail: currentUser.email,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    sent: true
+                });
+            }
+            
+            showToast(`✅ Notificação enviada para WhatsApp +${WHATSAPP_NUMBER}`);
+        }
 
-        const formattedPrice = p.price?.toLocaleString('pt-PT') || '0';
-        const featuredBadge = p.featured ? `<span class="featured-badge"><i class="fas fa-crown"></i> Destaque</span>` : '';
+        // ===== AUTH =====
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('authTitle').textContent = isLoginMode ? 'Entrar' : 'Criar conta';
+            document.getElementById('authButton').textContent = isLoginMode ? 'Entrar' : 'Criar conta';
+            document.getElementById('authSwitchText').textContent = isLoginMode ? 'Não tem conta?' : 'Já tem conta?';
+            document.getElementById('authSwitchLink').textContent = isLoginMode ? 'Criar conta' : 'Entrar';
+        }
 
-        html += `
-            <div class="provider-card" onclick="selectProviderForReport('${p.id}')">
-                ${featuredBadge}
-                <div class="card-top">
-                    <div class="avatar">
-                        <i class="fas fa-user"></i>
-                    </div>
-                    <div class="card-info">
-                        <div class="card-name-row">
-                            <span class="card-name">${p.name || 'Anónimo'}</span>
-                            ${verified}
-                        </div>
-                        <div class="card-category"><i class="fas fa-tag"></i> ${p.category || 'Sem categoria'}</div>
-                        <div class="card-rating">
-                            <span class="stars">${starsHtml}</span>
-                            <span class="rating-value">${p.rating ? p.rating.toFixed(1) : 'Novo'}</span>
-                            <span class="rating-count">(${p.ratings?.length || 0})</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-photos">${photosHtml}</div>
-                <div class="card-description">${p.description || 'Profissional qualificado.'}</div>
-                <div class="card-meta">
-                    <span><i class="fas fa-clock"></i> ${p.online ? 'Online agora' : 'Offline'}</span>
-                    <span><i class="fas fa-calendar"></i> ${p.ratings?.length || 0} serviços</span>
-                </div>
-                <div class="card-footer">
-                    <span class="card-price">Kz ${formattedPrice} <small>/ hora</small></span>
-                    <div style="display:flex;gap:8px;align-items:center;">
-                        <span class="card-distance"><i class="fas fa-map-pin"></i> ${p.area || 'Região'}</span>
-                        <button class="header-btn" style="width:32px;height:32px;font-size:14px;" onclick="event.stopPropagation();toggleFavorite('${p.id}')">
-                            <i class="fas fa-heart" style="color:${isFavorite ? 'var(--accent)' : 'var(--text-tertiary)'};"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-    container.innerHTML = html;
-}
+        function handleAuth() {
+            const email = document.getElementById('authEmail').value.trim();
+            const pass = document.getElementById('authPassword').value.trim();
+            if (!email || !pass) return showToast('Preencha email e senha');
 
-// ============================================================
-// FAVORITES
-// ============================================================
-function loadFavorites(uid) {
-    db.collection('users').doc(uid).collection('favorites')
-        .get()
-        .then(snapshot => {
-            favorites = [];
-            snapshot.forEach(doc => {
-                favorites.push(doc.id);
+            if (isLoginMode) {
+                auth.signInWithEmailAndPassword(email, pass)
+                    .then(cred => {
+                        showToast('✅ Login realizado!');
+                        loadUserData(cred.user.uid);
+                    })
+                    .catch(err => {
+                        console.error('Erro login:', err);
+                        showToast('❌ ' + err.message);
+                    });
+            } else {
+                auth.createUserWithEmailAndPassword(email, pass)
+                    .then(cred => {
+                        showToast('✅ Conta criada!');
+                        // Verifica se é o admin
+                        const isAdminUser = email === ADMIN_EMAIL;
+                        db.collection('users').doc(cred.user.uid).set({
+                            email: email,
+                            name: '',
+                            type: 'pending',
+                            isAdmin: isAdminUser,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then(() => {
+                            loadUserData(cred.user.uid);
+                            if (isAdminUser) {
+                                showToast('👑 Conta de administrador criada!');
+                            }
+                        });
+                    })
+                    .catch(err => {
+                        console.error('Erro criação:', err);
+                        if (err.code === 'auth/configuration-not-found') {
+                            showToast('❌ Ative o Authentication no console do Firebase!');
+                        } else {
+                            showToast('❌ ' + err.message);
+                        }
+                    });
+            }
+        }
+
+        function logout() {
+            // Atualizar status offline
+            if (currentUser) {
+                db.collection('users').doc(currentUser.uid).update({
+                    online: false,
+                    lastLogout: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+            auth.signOut().then(() => {
+                currentUser = null;
+                currentUserData = null;
+                isAdmin = false;
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('adminBadge').classList.add('hidden');
+                document.getElementById('navAdmin').classList.add('hidden');
+                showToast('👋 Desconectado');
+                showTab('home');
+                renderProfile();
+                updateNav();
             });
-        })
-        .catch(error => console.error('Erro ao carregar favoritos:', error));
-}
+        }
 
-function toggleFavorite(providerId) {
-    if (!currentUser) {
-        showToast('Faça login para favoritar', 'fa-exclamation-circle');
-        return;
-    }
-    
-    const isFavorite = favorites.includes(providerId);
-    const favRef = db.collection('users').doc(currentUser.uid).collection('favorites').doc(providerId);
-    
-    if (isFavorite) {
-        favRef.delete()
-            .then(() => {
-                favorites = favorites.filter(id => id !== providerId);
-                showToast('Removido dos favoritos', 'fa-heart');
-                searchProviders();
-            })
-            .catch(error => console.error('Erro ao remover favorito:', error));
-    } else {
-        favRef.set({
-            providerId: providerId,
-            addedAt: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(() => {
-            favorites.push(providerId);
-            showToast('Adicionado aos favoritos ❤️', 'fa-heart');
-            searchProviders();
-        })
-        .catch(error => console.error('Erro ao adicionar favorito:', error));
-    }
-}
+        // ===== CARREGAR DADOS DO USUÁRIO =====
+        function loadUserData(uid) {
+            db.collection('users').doc(uid).get().then(doc => {
+                if (doc.exists) {
+                    currentUserData = doc.data();
+                    currentUser = { uid, ...currentUserData };
+                    
+                    // Verificar se é admin
+                    isAdmin = currentUserData.isAdmin === true || currentUser.email === ADMIN_EMAIL;
+                    
+                    if (isAdmin) {
+                        document.getElementById('adminBadge').classList.remove('hidden');
+                        document.getElementById('navAdmin').classList.remove('hidden');
+                        // Atualizar para admin se não estiver marcado
+                        if (!currentUserData.isAdmin) {
+                            db.collection('users').doc(uid).update({ isAdmin: true });
+                        }
+                        showToast('👑 Modo Administrador ativado');
+                    }
+                    
+                    document.getElementById('logoutBtn').style.display = 'block';
+                    
+                    // Atualizar status online
+                    db.collection('users').doc(uid).update({
+                        online: true,
+                        lastOnline: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    
+                    // Se for prestador, carregar perfil
+                    if (currentUserData.type === 'provider') {
+                        loadProviderProfile(uid);
+                    }
+                    
+                    // Se não tem tipo ou é admin, mostrar opções
+                    if (!currentUserData.type || currentUserData.type === 'pending') {
+                        if (isAdmin) {
+                            showTab('admin');
+                        } else {
+                            showTab('register');
+                        }
+                    } else {
+                        showTab('home');
+                    }
+                    
+                    renderProfile();
+                    updateNav();
+                    loadProviders();
+                    
+                    // Iniciar monitoramento de usuários online
+                    if (isAdmin) {
+                        monitorOnlineUsers();
+                        loadAdminData();
+                    }
+                } else {
+                    // Criar documento
+                    const isAdminUser = currentUser.email === ADMIN_EMAIL;
+                    db.collection('users').doc(uid).set({
+                        email: currentUser.email,
+                        name: '',
+                        type: 'pending',
+                        isAdmin: isAdminUser,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                        lastLogin: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => loadUserData(uid));
+                }
+            }).catch(err => {
+                console.error('Erro ao carregar usuário:', err);
+                showToast('Erro ao carregar perfil');
+            });
+        }
 
-// ============================================================
-// REPORT SYSTEM
-// ============================================================
-function populateProviderSelect() {
-    const select = document.getElementById('reportProvider');
-    select.innerHTML = '<option value="">Selecione um prestador...</option>';
-    providers.forEach(p => {
-        select.innerHTML += `<option value="${p.id}">${p.name} - ${p.category}</option>`;
-    });
-}
+        // ===== MONITORAR USUÁRIOS ONLINE (para admin) =====
+        function monitorOnlineUsers() {
+            db.collection('users')
+                .where('online', '==', true)
+                .onSnapshot(snapshot => {
+                    const users = [];
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        users.push({ id: doc.id, ...data });
+                    });
+                    onlineUsers = users;
+                    renderAdminUsers();
+                });
+        }
 
-function selectReportType(el) {
-    document.querySelectorAll('.report-type').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    selectedReportType = el.dataset.type;
-    updatePreview();
-}
-
-function selectProviderForReport(providerId) {
-    const select = document.getElementById('reportProvider');
-    select.value = providerId;
-    showPage('report');
-    updatePreview();
-}
-
-function updatePreview() {
-    const type = selectedReportType;
-    const providerId = document.getElementById('reportProvider').value;
-    const description = document.getElementById('reportDescription').value || 'Aguardando descrição...';
-    const contact = document.getElementById('reportContact').value || 'Não fornecido';
-    
-    const provider = providers.find(p => p.id === providerId);
-    const providerName = provider ? `${provider.name} (${provider.category})` : 'Não selecionado';
-    const typeLabel = type ? reportTypes[type] || type : 'Não selecionado';
-    
-    document.getElementById('previewType').textContent = typeLabel;
-    document.getElementById('previewProvider').textContent = providerName;
-    document.getElementById('previewDescription').textContent = description;
-    document.getElementById('previewContact').textContent = contact;
-    document.getElementById('previewDate').textContent = new Date().toLocaleString('pt-PT', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    });
-}
-
-// Listeners
-document.getElementById('reportProvider').addEventListener('change', updatePreview);
-document.getElementById('reportDescription').addEventListener('input', updatePreview);
-document.getElementById('reportContact').addEventListener('input', updatePreview);
-
-function sendReport() {
-    const type = selectedReportType;
-    const providerId = document.getElementById('reportProvider').value;
-    const description = document.getElementById('reportDescription').value.trim();
-    const contact = document.getElementById('reportContact').value.trim();
-
-    if (!type) {
-        showToast('Selecione o tipo de problema', 'fa-exclamation-circle');
-        return;
-    }
-    if (!providerId) {
-        showToast('Selecione o prestador envolvido', 'fa-exclamation-circle');
-        return;
-    }
-    if (!description || description.length < 10) {
-        showToast('Descreva o problema com pelo menos 10 caracteres', 'fa-exclamation-circle');
-        return;
-    }
-
-    const provider = providers.find(p => p.id === providerId);
-    const typeLabel = reportTypes[type] || type;
-    const date = new Date().toLocaleString('pt-PT', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    });
-
-    // Salvar no Firebase
-    if (currentUser) {
-        db.collection('reports').add({
-            type: type,
-            typeLabel: typeLabel,
-            providerId: providerId,
-            providerName: provider?.name || 'Desconhecido',
-            providerCategory: provider?.category || 'Desconhecido',
-            description: description,
-            contact: contact || 'Não fornecido',
-            userId: currentUser.uid,
-            userEmail: currentUser.email,
-            status: 'pendente',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            date: date
-        }).catch(error => console.error('Erro ao salvar reporte:', error));
-    }
-
-    // Construir mensagem WhatsApp
-    const message = `
-📢 *REPORTE DE PROBLEMA - SALO URGENTE*
-
-━━━━━━━━━━━━━━━━━━━
-📌 *Tipo:* ${typeLabel}
-👤 *Prestador:* ${provider?.name || 'Desconhecido'} (${provider?.category || 'Desconhecido'})
-📝 *Descrição:* ${description}
-📞 *Contacto:* ${contact || 'Não fornecido'}
-📅 *Data:* ${date}
-👤 *Reportado por:* ${currentUser?.email || 'Anónimo'}
-━━━━━━━━━━━━━━━━━━━
-
-⚠️ Este reporte será analisado pela equipa Salo Urgente.
-    `.trim();
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
-    showToast('A redirecionar para o WhatsApp...', 'fa-check-circle');
-    
-    setTimeout(() => {
-        clearReport();
-    }, 3000);
-}
-
-function clearReport() {
-    document.querySelectorAll('.report-type').forEach(t => t.classList.remove('active'));
-    selectedReportType = null;
-    document.getElementById('reportProvider').value = '';
-    document.getElementById('reportDescription').value = '';
-    document.getElementById('reportContact').value = '';
-    updatePreview();
-    showToast('Formulário limpo', 'fa-undo');
-}
-
-// ============================================================
-// NAVEGAÇÃO
-// ============================================================
-function showPage(page) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    const target = document.getElementById(`page-${page}`);
-    if (target) target.classList.add('active');
-
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const nav = document.getElementById(`nav-${page}`);
-    if (nav) nav.classList.add('active');
-}
-
-// ============================================================
-// QUICK FILTER
-// ============================================================
-function quickFilter(el, category) {
-    document.querySelectorAll('.quick-filter').forEach(c => c.classList.remove('active'));
-    el.classList.add('active');
-    document.getElementById('categoryFilter').value = category;
-    searchProviders();
-}
-
-// ============================================================
-// SEARCH
-// ============================================================
-window.searchProviders = searchProviders;
-
-// ============================================================
-// PERFIL
-// ============================================================
-function renderProfile() {
-    const container = document.getElementById('profileContent');
-    
-    if (!currentUser || !currentUserData) {
-        container.innerHTML = `
-            <div class="profile-card">
-                <div class="profile-avatar"><i class="fas fa-user"></i></div>
-                <div class="profile-name">Visitante</div>
-                <div class="profile-role">👤 Utilizador</div>
-                <div style="text-align:center;padding:12px 0;">
-                    <button class="btn-secondary" onclick="showPage('report')">
-                        <i class="fas fa-flag"></i> Reportar Problema
-                    </button>
-                </div>
-            </div>
-        `;
-        return;
-    }
-    
-    const user = currentUserData;
-    const isProvider = user.type === 'prestador';
-    const providerId = user.providerId;
-    let providerData = null;
-    
-    if (isProvider && providerId) {
-        providerData = providers.find(p => p.id === providerId);
-    }
-    
-    const stats = providerData ? {
-        services: providerData.ratings?.length || 0,
-        rating: providerData.rating || 0,
-        verified: providerData.verified || false,
-        kycStatus: providerData.kycStatus || 'pending'
-    } : {
-        services: 0,
-        rating: '—',
-        verified: false,
-        kycStatus: null
-    };
-    
-    container.innerHTML = `
-        <div class="profile-card">
-            <div class="profile-avatar"><i class="fas fa-user"></i></div>
-            <div class="profile-name">${user.name || currentUser.email?.split('@')[0] || 'Utilizador'}</div>
-            <div class="profile-role">${isProvider ? '🔧 Prestador' : '👤 Cliente'}</div>
-
-            <div class="profile-status">
-                ${providerData?.verified ? '<span class="verified-badge"><i class="fas fa-check-circle"></i> Verificado</span>' : ''}
-            </div>
-
-            <div class="profile-stats">
-                <div class="stat-item">
-                    <div class="stat-value">${stats.services}</div>
-                    <div class="stat-label">Serviços</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">${typeof stats.rating === 'number' ? stats.rating.toFixed(1) : stats.rating}</div>
-                    <div class="stat-label">Avaliação</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-value">${user.location || 'N/A'}</div>
-                    <div class="stat-label">Localização</div>
-                </div>
-            </div>
-
-            ${providerData ? `
-                <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.04);">
-                    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-                        <span style="font-weight:600;color:var(--text-secondary);"><i class="fas fa-tag"></i> ${providerData.category || 'Sem categoria'}</span>
-                        <span style="font-weight:600;color:var(--accent-light);"><i class="fas fa-money-bill-wave"></i> Kz ${(providerData.price || 0).toLocaleString('pt-PT')}/hora</span>
+        // ===== RENDER ADMIN USERS =====
+        function renderAdminUsers() {
+            const container = document.getElementById('adminUsersList');
+            if (!container) return;
+            
+            let html = '';
+            onlineUsers.forEach(user => {
+                const isAdminUser = user.isAdmin ? '👑 ' : '';
+                const timeAgo = user.lastOnline ? new Date(user.lastOnline.seconds * 1000).toLocaleTimeString() : 'agora';
+                html += `
+                    <div class="admin-user-item flex-between">
+                        <div>
+                            <strong>${isAdminUser}${user.name || user.email}</strong>
+                            <div class="text-muted" style="font-size:12px;">${user.email}</div>
+                        </div>
+                        <div>
+                            <span class="online">🟢 Online</span>
+                            <div class="text-muted" style="font-size:11px;">último: ${timeAgo}</div>
+                        </div>
                     </div>
-                    <p class="text-muted" style="margin-top:4px;">${providerData.description || ''}</p>
-                </div>
-            ` : ''}
+                `;
+            });
+            
+            if (onlineUsers.length === 0) {
+                html = '<div class="text-muted">Nenhum usuário online no momento</div>';
+            }
+            container.innerHTML = html;
+        }
 
-            <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-                <button class="btn-secondary" style="flex:1;" onclick="showPage('report')">
-                    <i class="fas fa-flag"></i> Reportar Problema
-                </button>
-                <button class="btn-outline" style="flex:1;" onclick="logoutUser()">
-                    <i class="fas fa-sign-out-alt"></i> Sair
-                </button>
-            </div>
-        </div>
-    `;
-}
+        // ===== LOAD ADMIN DATA =====
+        function loadAdminData() {
+            // Prestadores pendentes
+            db.collection('providers')
+                .where('verified', '==', false)
+                .get()
+                .then(snapshot => {
+                    const container = document.getElementById('adminPendingProviders');
+                    if (!container) return;
+                    
+                    if (snapshot.empty) {
+                        container.innerHTML = '<div class="text-muted">Nenhum prestador pendente</div>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    snapshot.forEach(doc => {
+                        const p = doc.data();
+                        html += `
+                            <div class="admin-user-item">
+                                <div class="flex-between">
+                                    <div>
+                                        <strong>${p.name}</strong>
+                                        <div class="text-muted" style="font-size:12px;">${p.category} • ${p.area}</div>
+                                        <div class="text-muted" style="font-size:12px;">${p.description || ''}</div>
+                                    </div>
+                                    <div class="provider-actions">
+                                        <button class="approve-btn" onclick="approveProvider('${doc.id}')">✅ Aprovar</button>
+                                        <button class="reject-btn" onclick="rejectProvider('${doc.id}')">❌ Rejeitar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                });
 
-// ============================================================
-// INICIALIZAR
-// ============================================================
-// Populate provider select after providers load
-setTimeout(() => {
-    populateProviderSelect();
-}, 1000);
+            // Todas as conversas
+            db.collection('chats')
+                .orderBy('updatedAt', 'desc')
+                .limit(20)
+                .get()
+                .then(snapshot => {
+                    const container = document.getElementById('adminChatsList');
+                    if (!container) return;
+                    
+                    if (snapshot.empty) {
+                        container.innerHTML = '<div class="text-muted">Nenhuma conversa ainda</div>';
+                        return;
+                    }
+                    
+                    let html = '';
+                    snapshot.forEach(doc => {
+                        const chat = doc.data();
+                        const lastMsg = chat.messages && chat.messages.length > 0 ? 
+                            chat.messages[chat.messages.length - 1].text : 'Sem mensagens';
+                        html += `
+                            <div class="admin-chat-item" onclick="viewAdminChat('${doc.id}')">
+                                <div class="flex-between">
+                                    <div>
+                                        <strong>Chat ${doc.id.substring(0, 8)}</strong>
+                                        <div class="text-muted" style="font-size:12px;">${lastMsg}</div>
+                                    </div>
+                                    <div class="text-muted" style="font-size:11px;">
+                                        ${chat.updatedAt ? new Date(chat.updatedAt.seconds * 1000).toLocaleString() : 'agora'}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    container.innerHTML = html;
+                });
 
-console.log('🚀 Salo Urgente - App Real com Firebase!');
-console.log('📱 WhatsApp: +' + WHATSAPP_NUMBER);
-console.log('🔗 Repositório: admyacm-hub/salo-urgente');
-</script>
+            // Estatísticas
+            Promise.all([
+                db.collection('users').get(),
+                db.collection('providers').get(),
+                db.collection('chats').get(),
+                db.collection('notifications').get()
+            ]).then(([users, providers, chats, notifications]) => {
+                const container = document.getElementById('adminStats');
+                if (!container) return;
+                
+                container.innerHTML = `
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                        <div style="background:white; padding:12px; border-radius:12px; text-align:center;">
+                            <div style="font-size:24px; font-weight:700;">${users.size}</div>
+                            <div class="text-muted">Total Usuários</div>
+                        </div>
+                        <div style="background:white; padding:12px; border-radius:12px; text-align:center;">
+                            <div style="font-size:24px; font-weight:700;">${providers.size}</div>
+                            <div class="text-muted">Prestadores</div>
+                        </div>
+                        <div style="background:white; padding:12px; border-radius:12px; text-align:center;">
+                            <div style="font-size:24px; font-weight:700;">${chats.size}</div>
+                            <div class="text-muted">Conversas</div>
+                        </div>
+                        <div style="background:white; padding:12px; border-radius:12px; text-align:center;">
+                            <div style="font-size:24px; font-weight:700;">${notifications.size}</div>
+                            <div class="text-muted">Notificações</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:12px; background:white; padding:12px; border-radius:12px;">
+                        <div class="text-muted">👑 Administrador: ${ADMIN_EMAIL}</div>
+                        <div class="text-muted">📱 WhatsApp: +${WHATSAPP_NUMBER}</div>
+                    </div>
+                `;
+            });
+        }
+
+        // ===== APROVAR/REJEITAR PRESTADOR (admin) =====
+        function approveProvider(providerId) {
+            db.collection('providers').doc(providerId).update({
+                verified: true,
+                approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                approvedBy: currentUser.uid
+            }).then(() => {
+                showToast('✅ Prestador aprovado!');
+                loadAdminData();
+                loadProviders();
+                
+                // Notificar via WhatsApp
+                db.collection('providers').doc(providerId).get().then(doc => {
+                    const p = doc.data();
+                    const msg = `✅ Prestador APROVADO: ${p.name} (${p.category}) - ${p.area}`;
+                    sendWhatsAppNotification(msg);
+                });
+            });
+        }
+
+        function rejectProvider(providerId) {
+            db.collection('providers').doc(providerId).get().then(doc => {
+                const p = doc.data();
+                const msg = `❌ Prestador REJEITADO: ${p.name} (${p.category}) - Motivo: não atende aos requisitos`;
+                sendWhatsAppNotification(msg);
+                
+                // Opcional: deletar ou marcar como rejeitado
+                db.collection('providers').doc(providerId).update({
+                    verified: false,
+                    rejected: true,
+                    rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    rejectedBy: currentUser.uid
+                }).then(() => {
+                    showToast('❌ Prestador rejeitado');
+                    loadAdminData();
+                });
+            });
+        }
+
+        // ===== VISUALIZAR CHAT COMO ADMIN =====
+        function viewAdminChat(chatId) {
+            adminChatView = chatId;
+            db.collection('chats').doc(chatId).get().then(doc => {
+                if (doc.exists) {
+                    const chat = doc.data();
+                    // Mostrar no chat normal
+                    selectedProviderId = chat.providerId;
+                    document.getElementById('chatProviderName').innerHTML = 
+                        `<i class="fas fa-shield-alt" style="color:#dc2626;"></i> Admin visualizando chat ${chatId.substring(0,8)}`;
+                    
+                    const msgs = chat.messages || [];
+                    if (msgs.length === 0) {
+                        document.getElementById('chatMessages').innerHTML = '<div class="text-muted">Sem mensagens</div>';
+                    } else {
+                        document.getElementById('chatMessages').innerHTML = msgs.map(m => {
+                            let cls = 'msg-client';
+                            if (m.sender === 'provider') cls = 'msg-provider';
+                            if (m.sender === 'admin') cls = 'msg-admin';
+                            return `<div class="msg ${cls}">${m.text}</div>`;
+                        }).join('');
+                    }
+                    showTab('chat');
+                }
+            });
+        }
+
+        // ===== PRESTADORES =====
+        function loadProviders() {
+            db.collection('providers')
+                .where('verified', '==', true)
+                .orderBy('rating', 'desc')
+                .limit(50)
+                .get()
+                .then(snapshot => {
+                    const list = [];
+                    snapshot.forEach(doc => {
+                        list.push({ id: doc.id, ...doc.data() });
+                    });
+                    renderProviders(list);
+                }).catch(err => {
+                    console.error('Erro ao carregar prestadores:', err);
+                });
+        }
+
+        function renderProviders(list) {
+            const container = document.getElementById('providerList');
+            if (!list || list.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center" style="padding:30px 0;">Nenhum prestador encontrado.</p>';
+                return;
+            }
+            let html = '';
+            list.forEach(p => {
+                const verifiedBadge = p.verified ?
+                    `<span class="badge-verified"><i class="fas fa-check-circle"></i> Verificado</span>` :
+                    `<span class="badge-pending">Aguardando aprovação</span>`;
+                const stars = p.rating ? '⭐'.repeat(Math.round(p.rating)) : '⭐'.repeat(0);
+                html += `
+                    <div class="card-provider" onclick="selectProvider('${p.id}')">
+                        <div class="provider-header">
+                            <div class="provider-avatar"><i class="fas fa-user"></i></div>
+                            <div class="provider-info">
+                                <div class="provider-name">${p.name} ${verifiedBadge}</div>
+                                <div class="text-muted" style="font-size:13px;"><i class="fas fa-tag"></i> ${p.category}</div>
+                            </div>
+                        </div>
+                        <div class="provider-meta">
+                            <span><i class="fas fa-map-pin"></i> ${p.area || 'N/A'}</span>
+                            <span><i class="fas fa-dollar-sign"></i> ${p.price || 'Sob consulta'}</span>
+                            <span class="provider-rating">${stars} ${p.rating || 'Novo'}</span>
+                        </div>
+                        <div class="text-muted" style="font-size:13px; margin-top:6px;">${p.description || ''}</div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function searchProviders() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const location = document.getElementById('locationFilter').value.toLowerCase();
+
+            db.collection('providers')
+                .where('verified', '==', true)
+                .get()
+                .then(snapshot => {
+                    const list = [];
+                    snapshot.forEach(doc => {
+                        const p = doc.data();
+                        let match = true;
+                        if (search && !p.name.toLowerCase().includes(search) && !(p.description || '').toLowerCase()
+                            .includes(search)) match = false;
+                        if (category && p.category !== category) match = false;
+                        if (location && !(p.area || '').toLowerCase().includes(location)) match = false;
+                        if (match) list.push({ id: doc.id, ...p });
+                    });
+                    list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+                    renderProviders(list);
+                }).catch(() => loadProviders());
+        }
+
+        // ===== REGISTRO PRESTADOR =====
+        function registerProvider() {
+            if (!currentUser) return showToast('Faça login primeiro');
+            const name = document.getElementById('regName').value.trim();
+            const category = document.getElementById('regCategory').value;
+            const area = document.getElementById('regArea').value.trim();
+            const desc = document.getElementById('regDesc').value.trim();
+            const price = parseFloat(document.getElementById('regPrice').value);
+            const photos = document.getElementById('regPhotos').value.split(',').map(s => s.trim()).filter(s => s);
+
+            if (!name || !area) return showToast('Preencha nome e área.');
+
+            const providerData = {
+                name,
+                category,
+                area,
+                description: desc,
+                price: price || 0,
+                photos: photos,
+                verified: false,
+                rating: 0,
+                ratings: [],
+                userId: currentUser.uid,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('providers').add(providerData).then(docRef => {
+                db.collection('users').doc(currentUser.uid).update({
+                    type: 'provider',
+                    providerId: docRef.id,
+                    name: name
+                }).then(() => {
+                    showToast('✅ Prestador cadastrado! Aguardando aprovação.');
+                    
+                    // NOTIFICAÇÃO WHATSAPP REAL
+                    const msg = `🆕 NOVO PRESTADOR: ${name}\n📋 Categoria: ${category}\n📍 Área: ${area}\n💰 Preço: R$ ${price || 'a definir'}\n📝 Desc: ${desc || 'N/A'}\n👤 Email: ${currentUser.email}\n📱 Para aprovar, acesse o painel admin.`;
+                    sendWhatsAppNotification(msg);
+                    
+                    currentUserData.type = 'provider';
+                    loadProviders();
+                    showTab('home');
+                });
+            }).catch(err => {
+                console.error('Erro ao cadastrar prestador:', err);
+                showToast('❌ Erro ao salvar: ' + err.message);
+            });
+        }
+
+        function skipRegistration() {
+            if (currentUser) {
+                db.collection('users').doc(currentUser.uid).update({
+                    type: 'client',
+                    name: document.getElementById('regName').value.trim() || 'Cliente'
+                }).then(() => {
+                    currentUserData.type = 'client';
+                    showToast('✅ Cadastro como cliente concluído');
+                    showTab('home');
+                });
+            }
+        }
+
+        // ===== SELECIONAR PRESTADOR (CHAT) =====
+        function selectProvider(id) {
+            if (!currentUser) return showToast('Faça login para conversar');
+            selectedProviderId = id;
+            db.collection('providers').doc(id).get().then(doc => {
+                if (doc.exists) {
+                    const p = doc.data();
+                    document.getElementById('chatProviderName').innerHTML =
+                        `<i class="fas fa-user"></i> ${p.name} ${p.verified ? '✅' : ''}`;
+                    
+                    // Carregar mensagens
+                    db.collection('chats')
+                        .where('providerId', '==', id)
+                        .where('clientId', '==', currentUser.uid)
+                        .get().then(snap => {
+                            let msgs = [];
+                            snap.forEach(d => {
+                                msgs = d.data().messages || [];
+                            });
+                            if (msgs.length === 0) {
+                                document.getElementById('chatMessages').innerHTML =
+                                    '<div class="text-muted">Inicie uma conversa...</div>';
+                            } else {
+                                document.getElementById('chatMessages').innerHTML = msgs.map(m =>
+                                    `<div class="msg ${m.sender === 'client' ? 'msg-client' : 'msg-provider'}">${m.text}</div>`
+                                ).join('');
+                            }
+                        });
+                    showTab('chat');
+                }
+            });
+        }
+
+        // ===== ENVIAR MENSAGEM =====
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text || !selectedProviderId || !currentUser) return showToast('Selecione um prestador');
+
+            const isAdminMsg = isAdmin && adminChatView;
+            const sender = isAdminMsg ? 'admin' : 'client';
+
+            const msg = {
+                text,
+                sender,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('chats')
+                .where('providerId', '==', selectedProviderId)
+                .where('clientId', '==', currentUser.uid)
+                .get().then(snap => {
+                    if (snap.empty) {
+                        // Criar novo chat
+                        db.collection('chats').add({
+                            providerId: selectedProviderId,
+                            clientId: currentUser.uid,
+                            messages: [msg],
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then(docRef => {
+                            input.value = '';
+                            showToast('✅ Mensagem enviada');
+                            if (!isAdminMsg) {
+                                // Simular resposta
+                                setTimeout(() => {
+                                    db.collection('chats').doc(docRef.id).update({
+                                        messages: firebase.firestore.FieldValue.arrayUnion({
+                                            text: 'Recebi! Em breve respondo.',
+                                            sender: 'provider',
+                                            timestamp: firebase.firestore.FieldValue
+                                                .serverTimestamp()
+                                        })
+                                    }).then(() => {
+                                        if (selectedProviderId) selectProvider(
+                                        selectedProviderId);
+                                    });
+                                }, 1500);
+                            }
+                            if (isAdmin) loadAdminData();
+                        });
+                    } else {
+                        const chatId = snap.docs[0].id;
+                        db.collection('chats').doc(chatId).update({
+                            messages: firebase.firestore.FieldValue.arrayUnion(msg),
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then(() => {
+                            input.value = '';
+                            if (isAdminMsg) {
+                                viewAdminChat(chatId);
+                            } else {
+                                selectProvider(selectedProviderId);
+                            }
+                            if (isAdmin) loadAdminData();
+                        });
+                    }
+                });
+        }
+
+        // ===== FECHAR SERVIÇO =====
+        function closeService() {
+            if (!selectedProviderId) return showToast('Selecione um prestador');
+            ratingProviderId = selectedProviderId;
+            document.getElementById('ratingModal').classList.remove('hidden');
+            document.querySelectorAll('#ratingStars i').forEach(el => el.classList.remove('active'));
+        }
+
+        function closeRatingModal() {
+            document.getElementById('ratingModal').classList.add('hidden');
+        }
+
+        function submitRating() {
+            const stars = document.querySelectorAll('#ratingStars i.active');
+            const selected = stars.length;
+            if (selected === 0) return showToast('Selecione uma nota');
+            const comment = document.getElementById('ratingComment').value.trim();
+
+            const rating = {
+                stars: selected,
+                comment: comment || '',
+                userId: currentUser.uid,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('providers').doc(ratingProviderId).update({
+                ratings: firebase.firestore.FieldValue.arrayUnion(rating)
+            }).then(() => {
+                db.collection('providers').doc(ratingProviderId).get().then(doc => {
+                    const data = doc.data();
+                    const ratings = data.ratings || [];
+                    const total = ratings.reduce((acc, r) => acc + r.stars, 0);
+                    const avg = ratings.length > 0 ? Math.round((total / ratings.length) * 10) / 10 : 0;
+                    db.collection('providers').doc(ratingProviderId).update({ rating: avg });
+                    showToast('⭐ Avaliação enviada!');
+                    closeRatingModal();
+                    loadProviders();
+                });
+            }).catch(err => {
+                showToast('❌ Erro ao enviar avaliação');
+                console.error(err);
+            });
+        }
+
+        // ===== NAVEGAÇÃO =====
+        function showTab(tab) {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('authPage').classList.add('hidden');
+            document.getElementById('registerPage').classList.add('hidden');
+            document.getElementById('chatPage').classList.add('hidden');
+            document.getElementById('profilePage').classList.add('hidden');
+            document.getElementById('adminPage').classList.add('hidden');
+
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
+
+            if (tab === 'home') {
+                document.getElementById('homePage').classList.remove('hidden');
+                document.getElementById('navHome').classList.add('active');
+                loadProviders();
+            } else if (tab === 'auth') {
+                document.getElementById('authPage').classList.remove('hidden');
+                document.getElementById('navAuth').classList.add('active');
+            } else if (tab === 'register') {
+                document.getElementById('registerPage').classList.remove('hidden');
+                document.getElementById('navAuth').classList.add('active');
+            } else if (tab === 'chat') {
+                document.getElementById('chatPage').classList.remove('hidden');
+                document.getElementById('navChat').classList.add('active');
+            } else if (tab === 'perfil') {
+                document.getElementById('profilePage').classList.remove('hidden');
+                document.getElementById('navProfile').classList.add('active');
+                renderProfile();
+            } else if (tab === 'admin') {
+                document.getElementById('adminPage').classList.remove('hidden');
+                document.getElementById('navAdmin').classList.add('active');
+                loadAdminData();
+            }
+            updateNav();
+        }
+
+        function updateNav() {
+            const authNav = document.getElementById('navAuth');
+            if (currentUser) {
+                authNav.innerHTML = `<i class="fas fa-user-plus"></i><span>Minha conta</span>`;
+            } else {
+                authNav.innerHTML = `<i class="fas fa-user-plus"></i><span>Entrar</span>`;
+            }
+        }
+
+        function renderProfile() {
+            const container = document.getElementById('profileContent');
+            if (currentUserData) {
+                const isAdminUser = currentUserData.isAdmin ? '👑 Administrador' : '';
+                container.innerHTML = `
+                    <div style="background:#f1f5f9;padding:16px;border-radius:16px;">
+                        <p><strong>${currentUserData.name || 'Usuário'}</strong> ${isAdminUser}</p>
+                        <p><i class="fas fa-envelope"></i> ${currentUser.email}</p>
+                        <p><i class="fas fa-user-tag"></i> Tipo: ${currentUserData.type || 'Pendente'}</p>
+                        ${currentUserData.type === 'provider' ? `<p><i class="fas fa-check-circle"></i> ${currentUserData.verified ? 'Verificado ✅' : 'Aguardando aprovação'}</p>` : ''}
+                        ${currentUserData.isAdmin ? `<p><i class="fas fa-shield-alt" style="color:#dc2626;"></i> Acesso total ao sistema</p>` : ''}
+                    </div>
+                `;
+            } else {
+                container.innerHTML =
+                    `<p class="text-muted">Faça login para ver seu perfil. <button class="btn-primary" style="width:auto;padding:8px 20px;margin-top:10px;" onclick="showTab('auth')">Entrar</button></p>`;
+            }
+        }
+
+        // ===== RATING STARS =====
+        document.addEventListener('click', function(e) {
+            const star = e.target.closest('#ratingStars i');
+            if (star) {
+                const val = parseInt(star.dataset.val);
+                document.querySelectorAll('#ratingStars i').forEach((el, idx) => {
+                    el.classList.toggle('active', idx < val);
+                });
+            }
+        });
+
+        // ===== OBSERVADOR DE AUTENTICAÇÃO =====
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('logoutBtn').style.display = 'block';
+                loadUserData(user.uid);
+                updateNav();
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                isAdmin = false;
+                document.getElementById('logoutBtn').style.display = 'none';
+                document.getElementById('adminBadge').classList.add('hidden');
+                document.getElementById('navAdmin').classList.add('hidden');
+                updateNav();
+            }
+        });
+
+        // ===== INICIALIZAR =====
+        showTab('home');
+        updateNav();
+
+        // Expor funções
+        window.searchProviders = searchProviders;
+        window.selectProvider = selectProvider;
+        window.sendChatMessage = sendChatMessage;
+        window.closeService = closeService;
+        window.closeRatingModal = closeRatingModal;
+        window.submitRating = submitRating;
+        window.registerProvider = registerProvider;
+        window.skipRegistration = skipRegistration;
+        window.showTab = showTab;
+        window.handleAuth = handleAuth;
+        window.toggleAuthMode = toggleAuthMode;
+        window.logout = logout;
+        window.renderProfile = renderProfile;
+        window.loadProviders = loadProviders;
+        window.showToast = showToast;
+        window.approveProvider = approveProvider;
+        window.rejectProvider = rejectProvider;
+        window.viewAdminChat = viewAdminChat;
+        window.sendWhatsAppNotification = sendWhatsAppNotification;
+        window.loadAdminData = loadAdminData;
+
+        console.log('🚀 ServiçoLocal com ADMIN e WhatsApp real!');
+        console.log(`👑 Admin: ${ADMIN_EMAIL}`);
+        console.log(`📱 WhatsApp: +${WHATSAPP_NUMBER}`);
+        console.log('⚠️ Substitua firebaseConfig com suas credenciais reais');
+        console.log('📌 Ative Authentication e Firestore no console do Firebase');
+    </script>
 </body>
 </html>
