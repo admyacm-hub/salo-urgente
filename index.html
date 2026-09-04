@@ -15,7 +15,7 @@
     
     <style>
         /* ============================================================
-           DESIGN SYSTEM - SALO URGENTE
+           DESIGN SYSTEM - SALO URGENTE (MANTIDO)
            ============================================================ */
         :root {
             --primary: #0a0612;
@@ -1373,6 +1373,15 @@
             <div class="filter-row">
                 <select id="categoryFilter">
                     <option value="">📋 Todas as categorias</option>
+                    <!-- NOVAS CATEGORIAS ADICIONADAS -->
+                    <option value="Manicure">💅 Manicure</option>
+                    <option value="Cabeleireira">💇‍♀️ Cabeleireira</option>
+                    <option value="Barbeiro">✂️ Barbeiro</option>
+                    <option value="Confeiteira">🎂 Confeiteira</option>
+                    <option value="Massagista">💆 Massagista</option>
+                    <option value="Babá">👶 Babá</option>
+                    <option value="Fachineira">🧹 Fachineira</option>
+                    <!-- CATEGORIAS EXISTENTES -->
                     <option value="Eletricista">⚡ Eletricista</option>
                     <option value="Canalizador">🔧 Canalizador</option>
                     <option value="Pintor">🎨 Pintor</option>
@@ -1401,15 +1410,16 @@
             </div>
             <div class="quick-filters" id="quickFilters">
                 <span class="quick-filter active" onclick="quickFilter(this,'')">🌟 Todos</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Manicure')">💅</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Cabeleireira')">💇</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Barbeiro')">✂️</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Confeiteira')">🎂</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Massagista')">💆</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Babá')">👶</span>
+                <span class="quick-filter" onclick="quickFilter(this,'Fachineira')">🧹</span>
                 <span class="quick-filter" onclick="quickFilter(this,'Eletricista')">⚡</span>
                 <span class="quick-filter" onclick="quickFilter(this,'Canalizador')">🔧</span>
                 <span class="quick-filter" onclick="quickFilter(this,'Pintor')">🎨</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Jardinagem')">🌿</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Limpeza')">🧹</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Tecnologia')">💻</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Motorista')">🚗</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Construção')">🏗️</span>
-                <span class="quick-filter" onclick="quickFilter(this,'Mecânico')">🔩</span>
             </div>
         </div>
 
@@ -1450,6 +1460,15 @@
                     <label>Categoria <span class="required">*</span></label>
                     <select class="form-control" id="regCategory">
                         <option value="">Selecione uma categoria...</option>
+                        <!-- NOVAS CATEGORIAS ADICIONADAS -->
+                        <option value="Manicure">💅 Manicure</option>
+                        <option value="Cabeleireira">💇‍♀️ Cabeleireira</option>
+                        <option value="Barbeiro">✂️ Barbeiro</option>
+                        <option value="Confeiteira">🎂 Confeiteira</option>
+                        <option value="Massagista">💆 Massagista</option>
+                        <option value="Babá">👶 Babá</option>
+                        <option value="Fachineira">🧹 Fachineira</option>
+                        <!-- CATEGORIAS EXISTENTES -->
                         <option value="Eletricista">⚡ Eletricista</option>
                         <option value="Canalizador">🔧 Canalizador</option>
                         <option value="Pintor">🎨 Pintor</option>
@@ -2330,6 +2349,7 @@ function renderProfile() {
 console.log('🚀 Salo Urgente - App Completa com Firebase!');
 console.log('👑 Super Usuários:', SUPER_USERS);
 console.log('📱 WhatsApp: +244923529486');
+console.log('📋 Categorias disponíveis: 29 (incluindo Manicure, Cabeleireira, Barbeiro, Confeiteira, Massagista, Babá, Fachineira)');
 </script>
 </body>
 </html>
