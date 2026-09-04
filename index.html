@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     
-    <!-- Firebase SDK (versão compatível com GitHub Pages) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
@@ -263,6 +263,17 @@
         .header-greeting .logout-link:hover {
             color: var(--error);
         }
+        .header-greeting .admin-badge {
+            background: rgba(212, 160, 23, 0.15);
+            color: var(--accent-light);
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 12px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(212, 160, 23, 0.2);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
 
         /* ===== BOTTOM NAV ===== */
         .bottom-nav {
@@ -270,7 +281,7 @@
             bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
-            max-width: 440px;
+            max-width: 480px;
             width: calc(100% - 32px);
             background: rgba(12, 8, 24, 0.92);
             backdrop-filter: blur(24px) saturate(200%);
@@ -430,6 +441,19 @@
             min-height: 80px;
             line-height: 1.5;
         }
+        select.form-control {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23ffffff' stroke-width='1.5' fill='none' stroke-linecap='round' opacity='0.4'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+            cursor: pointer;
+        }
+        select.form-control option {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
 
         /* ===== BOTÕES ===== */
         .btn-primary {
@@ -455,6 +479,11 @@
             box-shadow: 0 8px 32px rgba(212, 160, 23, 0.25);
         }
         .btn-primary:active { transform: scale(0.96); }
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
 
         .btn-secondary {
             background: rgba(255,255,255,0.05);
@@ -516,6 +545,50 @@
             box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
         }
         .btn-danger:active { transform: scale(0.96); }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition-spring);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+        }
+        .btn-success:active { transform: scale(0.96); }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition-spring);
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+        }
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.4);
+        }
+        .btn-warning:active { transform: scale(0.96); }
 
         /* ===== PÁGINAS ===== */
         .page {
@@ -730,6 +803,28 @@
             letter-spacing: 0.5px;
         }
 
+        .admin-actions {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            gap: 4px;
+        }
+        .admin-actions button {
+            padding: 4px 10px;
+            font-size: 9px;
+            border-radius: var(--radius-full);
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            transition: var(--transition);
+        }
+        .admin-actions button:hover {
+            transform: scale(1.05);
+        }
+
         .card-top {
             display: flex;
             gap: 14px;
@@ -779,6 +874,21 @@
             letter-spacing: 0.5px;
             text-transform: uppercase;
             border: 1px solid rgba(16, 185, 129, 0.1);
+        }
+
+        .pending-badge {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            font-size: 8px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid rgba(245, 158, 11, 0.1);
         }
 
         .card-category {
@@ -910,171 +1020,105 @@
         }
         .card-meta i { font-size: 11px; color: var(--text-tertiary); }
 
-        /* ===== REPORT SECTION ===== */
-        .report-section {
-            background: var(--bg-card);
-            border-radius: var(--radius-xl);
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-            margin-bottom: 20px;
-        }
-
-        .report-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        .report-header i {
-            font-size: 32px;
-            color: var(--error);
-        }
-        .report-header h4 {
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .report-header .report-sub {
-            font-size: 13px;
-            color: var(--text-tertiary);
-            font-weight: 400;
-        }
-
-        .report-types {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
-            margin: 12px 0 16px;
-        }
-        .report-type {
-            padding: 12px 8px;
-            border-radius: var(--radius-md);
-            border: 2px solid rgba(255,255,255,0.04);
-            background: rgba(255,255,255,0.02);
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition-spring);
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-tertiary);
-        }
-        .report-type i {
-            font-size: 20px;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .report-type:hover {
-            border-color: rgba(255,255,255,0.08);
-            background: rgba(255,255,255,0.04);
-        }
-        .report-type.active {
-            border-color: var(--error);
-            background: var(--error-bg);
-            color: var(--error);
-        }
-        .report-type.active i { color: var(--error); }
-
-        .whatsapp-preview {
-            background: rgba(37, 211, 102, 0.05);
-            border: 1px solid rgba(37, 211, 102, 0.1);
-            border-radius: var(--radius-md);
-            padding: 16px;
-            margin: 12px 0;
-        }
-        .whatsapp-preview .preview-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #25D366;
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-        .whatsapp-preview .preview-header i {
-            font-size: 20px;
-        }
-        .whatsapp-preview .preview-content {
-            font-size: 12px;
-            color: var(--text-secondary);
-            font-family: 'Courier New', monospace;
-            background: rgba(0,0,0,0.2);
-            padding: 12px;
-            border-radius: var(--radius-sm);
-            white-space: pre-wrap;
-            word-break: break-word;
-            max-height: 150px;
-            overflow-y: auto;
-        }
-        .whatsapp-preview .preview-content .highlight {
-            color: var(--accent-light);
-        }
-
-        .report-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 16px;
-        }
-        .report-actions .btn-danger { flex: 1; }
-        .report-actions .btn-outline { flex: 0.6; }
-
-        /* ===== PERFIL ===== */
-        .profile-card {
+        /* ===== CADASTRO PRESTADOR ===== */
+        .register-section {
             background: var(--bg-card);
             border-radius: var(--radius-xl);
             padding: 24px;
             border: 1px solid var(--border-color);
             backdrop-filter: blur(10px);
+            margin-bottom: 20px;
         }
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, rgba(212, 160, 23, 0.15), rgba(212, 160, 23, 0.03));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 36px;
-            color: var(--accent);
-            margin: 0 auto 14px;
-            border: 1px solid rgba(212, 160, 23, 0.06);
-        }
-        .profile-name {
-            text-align: center;
-            font-size: 22px;
+
+        .register-section h3 {
+            font-size: 20px;
             font-weight: 800;
+            margin-bottom: 4px;
             letter-spacing: -0.5px;
         }
-        .profile-role {
-            text-align: center;
+
+        .register-section .subtitle {
             color: var(--text-tertiary);
-            font-weight: 400;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 16px;
         }
 
-        .profile-stats {
+        .register-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        .register-tabs button {
+            flex: 1;
+            padding: 12px;
+            border-radius: var(--radius-full);
+            border: 1px solid rgba(255,255,255,0.04);
+            background: rgba(255,255,255,0.02);
+            color: var(--text-tertiary);
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition-spring);
+            font-family: 'Inter', sans-serif;
+        }
+        .register-tabs button.active {
+            background: rgba(212, 160, 23, 0.12);
+            border-color: rgba(212, 160, 23, 0.2);
+            color: var(--accent-light);
+        }
+        .register-tabs button:hover {
+            border-color: rgba(255,255,255,0.08);
+        }
+
+        .register-form {
+            display: none;
+        }
+        .register-form.active {
+            display: block;
+        }
+
+        /* ===== ADMIN ===== */
+        .admin-section {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+
+        .admin-section h3 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .admin-section .subtitle {
+            color: var(--text-tertiary);
+            font-size: 13px;
+            margin-bottom: 16px;
+        }
+
+        .admin-stats {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
-            margin: 16px 0;
+            margin-bottom: 16px;
         }
-        .stat-item {
+        .admin-stat {
             background: rgba(255,255,255,0.03);
-            padding: 12px;
+            padding: 16px;
             border-radius: var(--radius-md);
             text-align: center;
             border: 1px solid rgba(255,255,255,0.03);
-            transition: var(--transition);
         }
-        .stat-item:hover {
-            border-color: rgba(212, 160, 23, 0.08);
-        }
-        .stat-item .stat-value {
-            font-size: 20px;
+        .admin-stat .stat-number {
+            font-size: 24px;
             font-weight: 800;
             color: var(--text-primary);
         }
-        .stat-item .stat-label {
+        .admin-stat .stat-label {
             font-size: 10px;
             color: var(--text-tertiary);
             font-weight: 600;
@@ -1083,12 +1127,65 @@
             letter-spacing: 0.5px;
         }
 
-        .profile-status {
+        .admin-list-item {
             display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin: 12px 0;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+        .admin-list-item:last-child {
+            border-bottom: none;
+        }
+        .admin-list-item .item-info {
+            flex: 1;
+        }
+        .admin-list-item .item-info .item-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .admin-list-item .item-info .item-sub {
+            font-size: 12px;
+            color: var(--text-tertiary);
+        }
+        .admin-list-item .item-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .admin-list-item .item-actions button {
+            padding: 4px 12px;
+            font-size: 10px;
+            border-radius: var(--radius-full);
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .admin-list-item .item-actions button:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-status {
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: var(--radius-full);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .badge-status.pending {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+        .badge-status.approved {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        .badge-status.rejected {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
         }
 
         /* ===== TOAST ===== */
@@ -1153,6 +1250,7 @@
         .flex { display: flex; }
         .flex-between { display: flex; justify-content: space-between; align-items: center; }
         .w-full { width: 100%; }
+        .flex-wrap { flex-wrap: wrap; }
 
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -1165,7 +1263,7 @@
             .nav-item i { font-size: 18px; }
             .nav-item span { font-size: 8px; }
             .filter-row { flex-direction: column; }
-            .report-types { grid-template-columns: 1fr 1fr; }
+            .admin-stats { grid-template-columns: 1fr 1fr; }
             .profile-stats { grid-template-columns: 1fr 1fr; }
             .auth-box { padding: 24px 16px; }
             .header { padding: 16px 16px 12px; }
@@ -1231,6 +1329,7 @@
         </div>
         <div class="header-greeting">
             👋 Olá, <strong id="greetingName">Visitante</strong>
+            <span id="adminBadge" class="admin-badge" style="display:none;">🛡️ Admin</span>
             <span class="logout-link" onclick="logoutUser()">Sair</span>
         </div>
     </header>
@@ -1326,88 +1425,132 @@
         </div>
     </div>
 
-    <!-- ===== PÁGINA REPORT ===== -->
-    <div class="page" id="page-report">
-        <h3 style="font-size:22px;font-weight:800;margin-bottom:4px;letter-spacing:-0.5px;">
-            <i class="fas fa-flag" style="color:var(--error);"></i> Reportar Problema
-        </h3>
-        <p class="text-muted" style="margin-bottom:22px;">Ajude-nos a melhorar reportando situações que necessitam de atenção</p>
+    <!-- ===== PÁGINA CADASTRO ===== -->
+    <div class="page" id="page-cadastro">
+        <div class="register-section">
+            <h3><i class="fas fa-user-plus" style="color:var(--accent);"></i> Cadastro</h3>
+            <p class="subtitle">Cadastre-se como prestador ou cliente</p>
 
-        <div class="report-section">
-            <div class="report-header">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div>
-                    <h4>Reporte um problema</h4>
-                    <div class="report-sub">Selecione o tipo de problema e descreva a situação</div>
-                </div>
+            <div class="register-tabs">
+                <button class="active" onclick="switchRegisterTab('prestador')" id="tab-prestador">
+                    <i class="fas fa-tools"></i> Prestador
+                </button>
+                <button onclick="switchRegisterTab('cliente')" id="tab-cliente">
+                    <i class="fas fa-user"></i> Cliente
+                </button>
             </div>
 
-            <div class="report-types" id="reportTypes">
-                <div class="report-type" data-type="fraude" onclick="selectReportType(this)">
-                    <i class="fas fa-user-slash"></i>
-                    Fraude
-                </div>
-                <div class="report-type" data-type="mau_atendimento" onclick="selectReportType(this)">
-                    <i class="fas fa-times-circle"></i>
-                    Mau atendimento
-                </div>
-                <div class="report-type" data-type="preco_abusivo" onclick="selectReportType(this)">
-                    <i class="fas fa-money-bill-wave"></i>
-                    Preço abusivo
-                </div>
-                <div class="report-type" data-type="cancelamento" onclick="selectReportType(this)">
-                    <i class="fas fa-calendar-times"></i>
-                    Cancelamento
-                </div>
-                <div class="report-type" data-type="qualidade" onclick="selectReportType(this)">
-                    <i class="fas fa-star-half-alt"></i>
-                    Má qualidade
-                </div>
-                <div class="report-type" data-type="outro" onclick="selectReportType(this)">
-                    <i class="fas fa-ellipsis-h"></i>
-                    Outro
-                </div>
-            </div>
-
-            <div class="report-form" id="reportForm">
+            <!-- Formulário Prestador -->
+            <div class="register-form active" id="form-prestador">
                 <div class="form-group">
-                    <label>Prestador envolvido <span class="required">*</span></label>
-                    <select class="form-control" id="reportProvider">
-                        <option value="">Selecione um prestador...</option>
+                    <label>Nome completo <span class="required">*</span></label>
+                    <input class="form-control" id="regName" placeholder="Seu nome completo" />
+                </div>
+                <div class="form-group">
+                    <label>Categoria <span class="required">*</span></label>
+                    <select class="form-control" id="regCategory">
+                        <option value="">Selecione uma categoria...</option>
+                        <option value="Eletricista">⚡ Eletricista</option>
+                        <option value="Canalizador">🔧 Canalizador</option>
+                        <option value="Pintor">🎨 Pintor</option>
+                        <option value="Jardinagem">🌿 Jardinagem</option>
+                        <option value="Limpeza">🧹 Limpeza</option>
+                        <option value="Marcenaria">🪚 Marcenaria</option>
+                        <option value="Tecnologia">💻 Tecnologia</option>
+                        <option value="Construção">🏗️ Construção</option>
+                        <option value="Motorista">🚗 Motorista</option>
+                        <option value="Cozinheiro">🍳 Cozinheiro</option>
+                        <option value="Costureiro">🧵 Costureiro</option>
+                        <option value="Mecânico">🔩 Mecânico</option>
+                        <option value="Serralheiro">🔨 Serralheiro</option>
+                        <option value="Pedreiro">🧱 Pedreiro</option>
+                        <option value="Carpinteiro">🪵 Carpinteiro</option>
+                        <option value="Vidraceiro">🪟 Vidraceiro</option>
+                        <option value="Chaveiro">🔑 Chaveiro</option>
+                        <option value="Sapateiro">👞 Sapateiro</option>
+                        <option value="Eletrónica">📱 Eletrónica</option>
+                        <option value="Refrigeração">❄️ Refrigeração</option>
+                        <option value="Fotografia">📸 Fotografia</option>
+                        <option value="Eventos">🎉 Eventos</option>
+                        <option value="Tradução">🌍 Tradução</option>
                     </select>
                 </div>
-
                 <div class="form-group">
-                    <label>Descrição do problema <span class="required">*</span></label>
-                    <textarea class="form-control" id="reportDescription" placeholder="Descreva detalhadamente o que aconteceu..."></textarea>
+                    <label>Área de atendimento <span class="required">*</span></label>
+                    <input class="form-control" id="regArea" placeholder="Bairro, cidade, zona" />
                 </div>
-
                 <div class="form-group">
-                    <label>Seu contacto (opcional)</label>
-                    <input class="form-control" id="reportContact" placeholder="Número de telefone ou email" />
-                    <div class="text-muted text-sm" style="margin-top:4px;">Deixe o seu contacto se desejar ser contactado pela equipa</div>
+                    <label>Descrição do serviço</label>
+                    <textarea class="form-control" id="regDesc" placeholder="Descreva os seus serviços..."></textarea>
                 </div>
-
-                <div class="whatsapp-preview">
-                    <div class="preview-header">
-                        <i class="fab fa-whatsapp"></i>
-                        <span>Pré-visualização da mensagem WhatsApp</span>
-                    </div>
-                    <div class="preview-content" id="whatsappPreview">
-                        <span class="highlight">📢 NOVO REPORTE DE PROBLEMA</span>
-                        <span>Tipo: <span id="previewType">Não selecionado</span></span>
-                        <span>Prestador: <span id="previewProvider">Não selecionado</span></span>
-                        <span>Descrição: <span id="previewDescription">Aguardando descrição...</span></span>
-                        <span>Contacto: <span id="previewContact">Não fornecido</span></span>
-                        <span>Data: <span id="previewDate"></span></span>
-                    </div>
+                <div class="form-group">
+                    <label>Preço médio (Kz/hora) <span class="required">*</span></label>
+                    <input class="form-control" id="regPrice" type="number" placeholder="70" />
                 </div>
+                <div class="form-group">
+                    <label>Fotos (URLs separadas por vírgula)</label>
+                    <input class="form-control" id="regPhotos" placeholder="https://exemplo.com/foto1.jpg, https://..." />
+                </div>
+                <button class="btn-primary" onclick="registerProvider()">
+                    <i class="fas fa-check-circle"></i> Cadastrar como Prestador
+                </button>
+                <div class="whatsapp-notice" style="margin-top:12px;padding:12px;background:rgba(37,211,102,0.05);border-radius:var(--radius-md);border:1px solid rgba(37,211,102,0.1);">
+                    <i class="fab fa-whatsapp" style="color:#25D366;"></i>
+                    <span style="font-size:12px;color:var(--text-secondary);">Após cadastro, o prestador fica pendente até aprovação manual do administrador</span>
+                </div>
+            </div>
 
-                <div class="report-actions">
-                    <button class="btn-danger" onclick="sendReport()">
-                        <i class="fab fa-whatsapp"></i> Enviar via WhatsApp
-                    </button>
-                    <button class="btn-outline" onclick="clearReport()">Limpar</button>
+            <!-- Formulário Cliente -->
+            <div class="register-form" id="form-cliente">
+                <div class="form-group">
+                    <label>Nome completo <span class="required">*</span></label>
+                    <input class="form-control" id="regClientName" placeholder="Seu nome completo" />
+                </div>
+                <div class="form-group">
+                    <label>Localização <span class="required">*</span></label>
+                    <input class="form-control" id="regClientLocation" placeholder="Bairro, cidade" />
+                </div>
+                <button class="btn-primary" onclick="registerClient()">
+                    <i class="fas fa-check-circle"></i> Cadastrar como Cliente
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PÁGINA ADMIN ===== -->
+    <div class="page" id="page-admin">
+        <div class="admin-section">
+            <h3><i class="fas fa-shield-alt" style="color:var(--accent);"></i> Painel Administrativo</h3>
+            <p class="subtitle">Gerencie prestadores e reportes</p>
+
+            <div class="admin-stats" id="adminStats">
+                <div class="admin-stat">
+                    <div class="stat-number" id="statTotal">0</div>
+                    <div class="stat-label">Total Prestadores</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="stat-number" id="statPending">0</div>
+                    <div class="stat-label">Pendentes</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="stat-number" id="statReports">0</div>
+                    <div class="stat-label">Reportes</div>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:8px;margin-bottom:16px;">
+                <button class="btn-secondary" style="flex:1;padding:10px;" onclick="loadAdminData('providers')">
+                    <i class="fas fa-users"></i> Prestadores
+                </button>
+                <button class="btn-secondary" style="flex:1;padding:10px;" onclick="loadAdminData('reports')">
+                    <i class="fas fa-flag"></i> Reportes
+                </button>
+            </div>
+
+            <div id="adminList">
+                <div class="text-center" style="padding:20px 0;color:var(--text-tertiary);">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p style="margin-top:8px;">A carregar dados...</p>
                 </div>
             </div>
         </div>
@@ -1424,8 +1567,8 @@
                 <div class="profile-name">Visitante</div>
                 <div class="profile-role">👤 Utilizador</div>
                 <div style="text-align:center;padding:12px 0;">
-                    <button class="btn-secondary" onclick="showPage('report')">
-                        <i class="fas fa-flag"></i> Reportar Problema
+                    <button class="btn-secondary" onclick="showPage('cadastro')">
+                        <i class="fas fa-user-plus"></i> Cadastrar
                     </button>
                 </div>
             </div>
@@ -1438,9 +1581,13 @@
             <i class="fas fa-home"></i>
             <span>Início</span>
         </button>
-        <button class="nav-item" onclick="showPage('report')" id="nav-report">
-            <i class="fas fa-flag"></i>
-            <span>Reportar</span>
+        <button class="nav-item" onclick="showPage('cadastro')" id="nav-cadastro">
+            <i class="fas fa-user-plus"></i>
+            <span>Cadastro</span>
+        </button>
+        <button class="nav-item" onclick="showPage('admin')" id="nav-admin" style="display:none;">
+            <i class="fas fa-shield-alt"></i>
+            <span>Admin</span>
         </button>
         <button class="nav-item" onclick="showPage('perfil')" id="nav-perfil">
             <i class="fas fa-user"></i>
@@ -1451,7 +1598,7 @@
 
 <script>
 // ============================================================
-// FIREBASE CONFIG (direto no script para compatibilidade)
+// FIREBASE CONFIG
 // ============================================================
 const firebaseConfig = {
     apiKey: "AIzaSyArTnfdLQ21V8kDu3o7jJd1ZV4IbpIU6qY",
@@ -1464,9 +1611,15 @@ const firebaseConfig = {
 };
 
 // ============================================================
-// INICIALIZAR FIREBASE (compatível com GitHub Pages)
+// INICIALIZAR FIREBASE
 // ============================================================
-firebase.initializeApp(firebaseConfig);
+try {
+    firebase.initializeApp(firebaseConfig);
+    console.log('🔥 Firebase inicializado com sucesso!');
+} catch (error) {
+    console.error('Erro ao inicializar Firebase:', error);
+}
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 
@@ -1476,20 +1629,12 @@ const db = firebase.firestore();
 let currentUser = null;
 let currentUserData = null;
 let providers = [];
-let favorites = [];
-let selectedReportType = null;
+let reports = [];
+let isAdmin = false;
 let isAuthMode = 'login';
 
-const WHATSAPP_NUMBER = '244923529486';
-
-const reportTypes = {
-    'fraude': '🚨 Fraude / Engano',
-    'mau_atendimento': '😤 Mau Atendimento',
-    'preco_abusivo': '💰 Preço Abusivo',
-    'cancelamento': '❌ Cancelamento Indevido',
-    'qualidade': '⭐ Má Qualidade do Serviço',
-    'outro': '📌 Outro Problema'
-};
+// Super Usuário (admin)
+const SUPER_USERS = ['admin.yacm@gmail.com', 'salo.urgente.admin@gmail.com'];
 
 // ============================================================
 // TOAST
@@ -1546,6 +1691,7 @@ function handleAuth() {
                 showToast('Erro: ' + error.message, 'fa-exclamation-circle');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Entrar';
+                console.error('Erro de login:', error);
             });
     } else {
         auth.createUserWithEmailAndPassword(email, password)
@@ -1553,11 +1699,18 @@ function handleAuth() {
                 showToast('Conta criada com sucesso!', 'fa-check-circle');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar conta';
+                // Criar documento do usuário
+                db.collection('users').doc(result.user.uid).set({
+                    email: email,
+                    type: 'cliente',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                }).catch(err => console.error('Erro ao criar usuário:', err));
             })
             .catch(error => {
                 showToast('Erro: ' + error.message, 'fa-exclamation-circle');
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fas fa-user-plus"></i> Criar conta';
+                console.error('Erro de criação:', error);
             });
     }
 }
@@ -1582,16 +1735,29 @@ auth.onAuthStateChanged(user => {
         document.getElementById('bottomNav').style.display = 'flex';
         document.getElementById('greetingName').textContent = user.email?.split('@')[0] || 'Utilizador';
         
+        // Verificar se é admin
+        isAdmin = SUPER_USERS.includes(user.email);
+        if (isAdmin) {
+            document.getElementById('adminBadge').style.display = 'inline-block';
+            document.getElementById('nav-admin').style.display = 'flex';
+        } else {
+            document.getElementById('adminBadge').style.display = 'none';
+            document.getElementById('nav-admin').style.display = 'none';
+        }
+        
         loadUserData(user.uid);
         loadProviders();
-        loadFavorites(user.uid);
+        if (isAdmin) loadAdminData('providers');
         showPage('inicio');
     } else {
         currentUser = null;
         currentUserData = null;
+        isAdmin = false;
         document.getElementById('authScreen').classList.add('active');
         document.getElementById('appHeader').style.display = 'none';
         document.getElementById('bottomNav').style.display = 'none';
+        document.getElementById('adminBadge').style.display = 'none';
+        document.getElementById('nav-admin').style.display = 'none';
     }
 });
 
@@ -1618,18 +1784,136 @@ function loadUserData(uid) {
 }
 
 // ============================================================
+// REGISTRO - PRESTADOR
+// ============================================================
+function registerProvider() {
+    if (!currentUser) {
+        showToast('Faça login primeiro', 'fa-exclamation-circle');
+        return;
+    }
+
+    const name = document.getElementById('regName').value.trim();
+    const category = document.getElementById('regCategory').value;
+    const area = document.getElementById('regArea').value.trim();
+    const description = document.getElementById('regDesc').value.trim();
+    const price = parseFloat(document.getElementById('regPrice').value);
+    const photos = document.getElementById('regPhotos').value.split(',').map(s => s.trim()).filter(s => s);
+
+    if (!name || !category || !area || !price) {
+        showToast('Preencha todos os campos obrigatórios', 'fa-exclamation-circle');
+        return;
+    }
+
+    const btn = document.querySelector('#form-prestador .btn-primary');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> A cadastrar...';
+
+    const providerData = {
+        name,
+        category,
+        area,
+        description: description || '',
+        price: price,
+        photos: photos || [],
+        verified: false,
+        kycStatus: 'pending',
+        rating: 0,
+        ratings: [],
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    db.collection('providers').add(providerData)
+        .then(docRef => {
+            return db.collection('users').doc(currentUser.uid).update({
+                type: 'prestador',
+                providerId: docRef.id,
+                name: name
+            });
+        })
+        .then(() => {
+            showToast('✅ Prestador cadastrado! Aguardando aprovação.', 'fa-check-circle');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Cadastrar como Prestador';
+            
+            // Limpar formulário
+            document.getElementById('regName').value = '';
+            document.getElementById('regCategory').value = '';
+            document.getElementById('regArea').value = '';
+            document.getElementById('regDesc').value = '';
+            document.getElementById('regPrice').value = '';
+            document.getElementById('regPhotos').value = '';
+            
+            loadProviders();
+            showPage('inicio');
+        })
+        .catch(error => {
+            console.error('Erro ao cadastrar prestador:', error);
+            showToast('Erro ao cadastrar: ' + error.message, 'fa-exclamation-circle');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Cadastrar como Prestador';
+        });
+}
+
+// ============================================================
+// REGISTRO - CLIENTE
+// ============================================================
+function registerClient() {
+    if (!currentUser) {
+        showToast('Faça login primeiro', 'fa-exclamation-circle');
+        return;
+    }
+
+    const name = document.getElementById('regClientName').value.trim();
+    const location = document.getElementById('regClientLocation').value.trim();
+
+    if (!name || !location) {
+        showToast('Preencha todos os campos', 'fa-exclamation-circle');
+        return;
+    }
+
+    const btn = document.querySelector('#form-cliente .btn-primary');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> A cadastrar...';
+
+    db.collection('users').doc(currentUser.uid).update({
+        type: 'cliente',
+        name: name,
+        location: location
+    })
+    .then(() => {
+        currentUserData = { ...currentUserData, name, location, type: 'cliente' };
+        showToast('✅ Cliente cadastrado com sucesso!', 'fa-check-circle');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Cadastrar como Cliente';
+        
+        document.getElementById('regClientName').value = '';
+        document.getElementById('regClientLocation').value = '';
+        
+        renderProfile();
+        showPage('inicio');
+    })
+    .catch(error => {
+        console.error('Erro ao cadastrar cliente:', error);
+        showToast('Erro ao cadastrar: ' + error.message, 'fa-exclamation-circle');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check-circle"></i> Cadastrar como Cliente';
+    });
+}
+
+// ============================================================
 // PROVIDERS
 // ============================================================
 function loadProviders() {
     db.collection('providers')
-        .orderBy('rating', 'desc')
+        .orderBy('createdAt', 'desc')
         .get()
         .then(snapshot => {
             providers = [];
             snapshot.forEach(doc => {
                 providers.push({ id: doc.id, ...doc.data() });
             });
-            populateProviderSelect();
             searchProviders();
         })
         .catch(error => {
@@ -1653,8 +1937,6 @@ function searchProviders() {
     filtered.sort((a, b) => {
         if (a.featured && !b.featured) return -1;
         if (!a.featured && b.featured) return 1;
-        if (a.kycStatus === 'approved' && b.kycStatus !== 'approved') return -1;
-        if (a.kycStatus !== 'approved' && b.kycStatus === 'approved') return 1;
         if (a.verified && !b.verified) return -1;
         if (!a.verified && b.verified) return 1;
         return (b.rating || 0) - (a.rating || 0);
@@ -1673,6 +1955,9 @@ function renderProviders(list) {
                 <i class="fas fa-search"></i>
                 <h4>Nenhum prestador encontrado</h4>
                 <p>Tente ajustar os filtros ou ampliar a busca</p>
+                <button class="btn-secondary" style="margin-top:12px;" onclick="showPage('cadastro')">
+                    <i class="fas fa-user-plus"></i> Cadastrar-se
+                </button>
             </div>
         `;
         count.textContent = '0';
@@ -1683,7 +1968,6 @@ function renderProviders(list) {
 
     let html = '';
     list.forEach(p => {
-        const isFavorite = favorites.includes(p.id);
         const verified = p.verified
             ? `<span class="verified-badge"><i class="fas fa-check-circle"></i> Verificado</span>`
             : `<span class="pending-badge"><i class="fas fa-clock"></i> Pendente</span>`;
@@ -1701,9 +1985,25 @@ function renderProviders(list) {
         const formattedPrice = p.price?.toLocaleString('pt-PT') || '0';
         const featuredBadge = p.featured ? `<span class="featured-badge"><i class="fas fa-crown"></i> Destaque</span>` : '';
 
+        // Admin actions (só para admin)
+        let adminActions = '';
+        if (isAdmin && !p.verified) {
+            adminActions = `
+                <div class="admin-actions">
+                    <button class="btn-success" onclick="event.stopPropagation();approveProvider('${p.id}')">
+                        <i class="fas fa-check"></i> Aprovar
+                    </button>
+                    <button class="btn-danger" onclick="event.stopPropagation();rejectProvider('${p.id}')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            `;
+        }
+
         html += `
-            <div class="provider-card" onclick="selectProviderForReport('${p.id}')">
+            <div class="provider-card">
                 ${featuredBadge}
+                ${adminActions}
                 <div class="card-top">
                     <div class="avatar">
                         <i class="fas fa-user"></i>
@@ -1726,15 +2026,11 @@ function renderProviders(list) {
                 <div class="card-meta">
                     <span><i class="fas fa-clock"></i> ${p.online ? 'Online agora' : 'Offline'}</span>
                     <span><i class="fas fa-calendar"></i> ${p.ratings?.length || 0} serviços</span>
+                    <span><i class="fas fa-user"></i> ${p.userEmail || ''}</span>
                 </div>
                 <div class="card-footer">
                     <span class="card-price">Kz ${formattedPrice} <small>/ hora</small></span>
-                    <div style="display:flex;gap:8px;align-items:center;">
-                        <span class="card-distance"><i class="fas fa-map-pin"></i> ${p.area || 'Região'}</span>
-                        <button class="header-btn" style="width:32px;height:32px;font-size:14px;" onclick="event.stopPropagation();toggleFavorite('${p.id}')">
-                            <i class="fas fa-heart" style="color:${isFavorite ? 'var(--accent)' : 'var(--text-tertiary)'};"></i>
-                        </button>
-                    </div>
+                    <span class="card-distance"><i class="fas fa-map-pin"></i> ${p.area || 'Região'}</span>
                 </div>
             </div>
         `;
@@ -1743,180 +2039,157 @@ function renderProviders(list) {
 }
 
 // ============================================================
-// FAVORITES
+// ADMIN - APROVAR/REJEITAR PRESTADORES
 // ============================================================
-function loadFavorites(uid) {
-    db.collection('users').doc(uid).collection('favorites')
-        .get()
-        .then(snapshot => {
-            favorites = [];
-            snapshot.forEach(doc => {
-                favorites.push(doc.id);
-            });
-        })
-        .catch(error => console.error('Erro ao carregar favoritos:', error));
+function approveProvider(providerId) {
+    if (!isAdmin) return showToast('Acesso negado', 'fa-exclamation-circle');
+    
+    db.collection('providers').doc(providerId).update({
+        verified: true,
+        kycStatus: 'approved',
+        approvedAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+        showToast('✅ Prestador aprovado com sucesso!', 'fa-check-circle');
+        loadProviders();
+        loadAdminData('providers');
+    })
+    .catch(error => {
+        console.error('Erro ao aprovar:', error);
+        showToast('Erro ao aprovar: ' + error.message, 'fa-exclamation-circle');
+    });
 }
 
-function toggleFavorite(providerId) {
-    if (!currentUser) {
-        showToast('Faça login para favoritar', 'fa-exclamation-circle');
-        return;
-    }
+function rejectProvider(providerId) {
+    if (!isAdmin) return showToast('Acesso negado', 'fa-exclamation-circle');
     
-    const isFavorite = favorites.includes(providerId);
-    const favRef = db.collection('users').doc(currentUser.uid).collection('favorites').doc(providerId);
+    if (!confirm('Tem certeza que deseja rejeitar este prestador?')) return;
     
-    if (isFavorite) {
-        favRef.delete()
-            .then(() => {
-                favorites = favorites.filter(id => id !== providerId);
-                showToast('Removido dos favoritos', 'fa-heart');
-                searchProviders();
+    db.collection('providers').doc(providerId).update({
+        kycStatus: 'rejected',
+        rejectedAt: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+        showToast('Prestador rejeitado', 'fa-check-circle');
+        loadProviders();
+        loadAdminData('providers');
+    })
+    .catch(error => {
+        console.error('Erro ao rejeitar:', error);
+        showToast('Erro ao rejeitar: ' + error.message, 'fa-exclamation-circle');
+    });
+}
+
+// ============================================================
+// ADMIN - CARREGAR DADOS
+// ============================================================
+function loadAdminData(type) {
+    if (!isAdmin) return;
+    
+    const container = document.getElementById('adminList');
+    container.innerHTML = '<div class="text-center" style="padding:20px 0;color:var(--text-tertiary);"><i class="fas fa-spinner fa-spin"></i><p style="margin-top:8px;">A carregar...</p></div>';
+    
+    if (type === 'providers') {
+        db.collection('providers').orderBy('createdAt', 'desc').get()
+            .then(snapshot => {
+                const list = [];
+                snapshot.forEach(doc => {
+                    list.push({ id: doc.id, ...doc.data() });
+                });
+                
+                // Atualizar stats
+                const total = list.length;
+                const pending = list.filter(p => p.kycStatus === 'pending' || !p.verified).length;
+                document.getElementById('statTotal').textContent = total;
+                document.getElementById('statPending').textContent = pending;
+                
+                renderAdminProviders(list);
             })
-            .catch(error => console.error('Erro ao remover favorito:', error));
-    } else {
-        favRef.set({
-            providerId: providerId,
-            addedAt: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(() => {
-            favorites.push(providerId);
-            showToast('Adicionado aos favoritos ❤️', 'fa-heart');
-            searchProviders();
-        })
-        .catch(error => console.error('Erro ao adicionar favorito:', error));
+            .catch(error => {
+                console.error('Erro:', error);
+                container.innerHTML = '<div class="text-center" style="padding:20px 0;color:var(--text-tertiary);">Erro ao carregar</div>';
+            });
+    } else if (type === 'reports') {
+        db.collection('reports').orderBy('createdAt', 'desc').get()
+            .then(snapshot => {
+                const list = [];
+                snapshot.forEach(doc => {
+                    list.push({ id: doc.id, ...doc.data() });
+                });
+                document.getElementById('statReports').textContent = list.length;
+                renderAdminReports(list);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                container.innerHTML = '<div class="text-center" style="padding:20px 0;color:var(--text-tertiary);">Erro ao carregar</div>';
+            });
     }
 }
 
-// ============================================================
-// REPORT SYSTEM
-// ============================================================
-function populateProviderSelect() {
-    const select = document.getElementById('reportProvider');
-    select.innerHTML = '<option value="">Selecione um prestador...</option>';
-    providers.forEach(p => {
-        select.innerHTML += `<option value="${p.id}">${p.name} - ${p.category}</option>`;
-    });
-}
-
-function selectReportType(el) {
-    document.querySelectorAll('.report-type').forEach(t => t.classList.remove('active'));
-    el.classList.add('active');
-    selectedReportType = el.dataset.type;
-    updatePreview();
-}
-
-function selectProviderForReport(providerId) {
-    const select = document.getElementById('reportProvider');
-    select.value = providerId;
-    showPage('report');
-    updatePreview();
-}
-
-function updatePreview() {
-    const type = selectedReportType;
-    const providerId = document.getElementById('reportProvider').value;
-    const description = document.getElementById('reportDescription').value || 'Aguardando descrição...';
-    const contact = document.getElementById('reportContact').value || 'Não fornecido';
-    
-    const provider = providers.find(p => p.id === providerId);
-    const providerName = provider ? `${provider.name} (${provider.category})` : 'Não selecionado';
-    const typeLabel = type ? reportTypes[type] || type : 'Não selecionado';
-    
-    document.getElementById('previewType').textContent = typeLabel;
-    document.getElementById('previewProvider').textContent = providerName;
-    document.getElementById('previewDescription').textContent = description;
-    document.getElementById('previewContact').textContent = contact;
-    document.getElementById('previewDate').textContent = new Date().toLocaleString('pt-PT', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    });
-}
-
-// Listeners
-document.getElementById('reportProvider').addEventListener('change', updatePreview);
-document.getElementById('reportDescription').addEventListener('input', updatePreview);
-document.getElementById('reportContact').addEventListener('input', updatePreview);
-
-function sendReport() {
-    const type = selectedReportType;
-    const providerId = document.getElementById('reportProvider').value;
-    const description = document.getElementById('reportDescription').value.trim();
-    const contact = document.getElementById('reportContact').value.trim();
-
-    if (!type) {
-        showToast('Selecione o tipo de problema', 'fa-exclamation-circle');
+function renderAdminProviders(list) {
+    const container = document.getElementById('adminList');
+    if (!list || list.length === 0) {
+        container.innerHTML = '<div class="text-center" style="padding:20px 0;color:var(--text-tertiary);">Nenhum prestador cadastrado</div>';
         return;
     }
-    if (!providerId) {
-        showToast('Selecione o prestador envolvido', 'fa-exclamation-circle');
-        return;
-    }
-    if (!description || description.length < 10) {
-        showToast('Descreva o problema com pelo menos 10 caracteres', 'fa-exclamation-circle');
-        return;
-    }
-
-    const provider = providers.find(p => p.id === providerId);
-    const typeLabel = reportTypes[type] || type;
-    const date = new Date().toLocaleString('pt-PT', {
-        day: '2-digit', month: '2-digit', year: 'numeric',
-        hour: '2-digit', minute: '2-digit'
-    });
-
-    // Salvar no Firebase
-    if (currentUser) {
-        db.collection('reports').add({
-            type: type,
-            typeLabel: typeLabel,
-            providerId: providerId,
-            providerName: provider?.name || 'Desconhecido',
-            providerCategory: provider?.category || 'Desconhecido',
-            description: description,
-            contact: contact || 'Não fornecido',
-            userId: currentUser.uid,
-            userEmail: currentUser.email,
-            status: 'pendente',
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            date: date
-        }).catch(error => console.error('Erro ao salvar reporte:', error));
-    }
-
-    // Construir mensagem WhatsApp
-    const message = `
-📢 *REPORTE DE PROBLEMA - SALO URGENTE*
-
-━━━━━━━━━━━━━━━━━━━
-📌 *Tipo:* ${typeLabel}
-👤 *Prestador:* ${provider?.name || 'Desconhecido'} (${provider?.category || 'Desconhecido'})
-📝 *Descrição:* ${description}
-📞 *Contacto:* ${contact || 'Não fornecido'}
-📅 *Data:* ${date}
-👤 *Reportado por:* ${currentUser?.email || 'Anónimo'}
-━━━━━━━━━━━━━━━━━━━
-
-⚠️ Este reporte será analisado pela equipa Salo Urgente.
-    `.trim();
-
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
-    showToast('A redirecionar para o WhatsApp...', 'fa-check-circle');
     
-    setTimeout(() => {
-        clearReport();
-    }, 3000);
+    let html = '';
+    list.forEach(p => {
+        const status = p.verified ? 'approved' : (p.kycStatus || 'pending');
+        const statusLabel = {
+            'approved': '✅ Aprovado',
+            'pending': '⏳ Pendente',
+            'rejected': '❌ Rejeitado'
+        }[status] || status;
+        
+        html += `
+            <div class="admin-list-item">
+                <div class="item-info">
+                    <div class="item-name">${p.name || 'Anónimo'}</div>
+                    <div class="item-sub">${p.category || 'Sem categoria'} • ${p.area || 'N/A'}</div>
+                    <div class="item-sub" style="font-size:10px;">${p.userEmail || ''}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span class="badge-status ${status}">${statusLabel}</span>
+                    ${!p.verified && status !== 'rejected' ? `
+                        <button class="btn-success" style="padding:4px 12px;font-size:10px;border-radius:var(--radius-full);border:none;font-weight:700;cursor:pointer;" onclick="approveProvider('${p.id}')">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button class="btn-danger" style="padding:4px 12px;font-size:10px;border-radius:var(--radius-full);border:none;font-weight:700;cursor:pointer;" onclick="rejectProvider('${p.id}')">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
 }
 
-function clearReport() {
-    document.querySelectorAll('.report-type').forEach(t => t.classList.remove('active'));
-    selectedReportType = null;
-    document.getElementById('reportProvider').value = '';
-    document.getElementById('reportDescription').value = '';
-    document.getElementById('reportContact').value = '';
-    updatePreview();
-    showToast('Formulário limpo', 'fa-undo');
+function renderAdminReports(list) {
+    const container = document.getElementById('adminList');
+    if (!list || list.length === 0) {
+        container.innerHTML = '<div class="text-center" style="padding:20px 0;color:var(--text-tertiary);">Nenhum reporte</div>';
+        return;
+    }
+    
+    let html = '';
+    list.forEach(r => {
+        html += `
+            <div class="admin-list-item">
+                <div class="item-info">
+                    <div class="item-name">${r.providerName || 'Desconhecido'}</div>
+                    <div class="item-sub">${r.typeLabel || r.type || 'Reporte'} • ${r.date || ''}</div>
+                    <div class="item-sub" style="font-size:10px;">${r.description || ''}</div>
+                </div>
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <span class="badge-status ${r.status || 'pending'}">${r.status || 'Pendente'}</span>
+                    <span style="font-size:10px;color:var(--text-tertiary);">${r.userEmail || ''}</span>
+                </div>
+            </div>
+        `;
+    });
+    container.innerHTML = html;
 }
 
 // ============================================================
@@ -1943,6 +2216,16 @@ function quickFilter(el, category) {
 }
 
 // ============================================================
+// REGISTER TABS
+// ============================================================
+function switchRegisterTab(tab) {
+    document.getElementById('tab-prestador').className = tab === 'prestador' ? 'active' : '';
+    document.getElementById('tab-cliente').className = tab === 'cliente' ? 'active' : '';
+    document.getElementById('form-prestador').className = 'register-form' + (tab === 'prestador' ? ' active' : '');
+    document.getElementById('form-cliente').className = 'register-form' + (tab === 'cliente' ? ' active' : '');
+}
+
+// ============================================================
 // SEARCH
 // ============================================================
 window.searchProviders = searchProviders;
@@ -1960,8 +2243,8 @@ function renderProfile() {
                 <div class="profile-name">Visitante</div>
                 <div class="profile-role">👤 Utilizador</div>
                 <div style="text-align:center;padding:12px 0;">
-                    <button class="btn-secondary" onclick="showPage('report')">
-                        <i class="fas fa-flag"></i> Reportar Problema
+                    <button class="btn-secondary" onclick="showPage('cadastro')">
+                        <i class="fas fa-user-plus"></i> Cadastrar
                     </button>
                 </div>
             </div>
@@ -1998,6 +2281,7 @@ function renderProfile() {
 
             <div class="profile-status">
                 ${providerData?.verified ? '<span class="verified-badge"><i class="fas fa-check-circle"></i> Verificado</span>' : ''}
+                ${isAdmin ? '<span class="verified-badge" style="background:rgba(212,160,23,0.15);color:var(--accent-light);"><i class="fas fa-shield-alt"></i> Administrador</span>' : ''}
             </div>
 
             <div class="profile-stats">
@@ -2022,12 +2306,15 @@ function renderProfile() {
                         <span style="font-weight:600;color:var(--accent-light);"><i class="fas fa-money-bill-wave"></i> Kz ${(providerData.price || 0).toLocaleString('pt-PT')}/hora</span>
                     </div>
                     <p class="text-muted" style="margin-top:4px;">${providerData.description || ''}</p>
+                    <div style="margin-top:4px;font-size:12px;color:var(--text-tertiary);">
+                        Status: ${providerData.verified ? '✅ Aprovado' : '⏳ Aguardando aprovação'}
+                    </div>
                 </div>
             ` : ''}
 
             <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-                <button class="btn-secondary" style="flex:1;" onclick="showPage('report')">
-                    <i class="fas fa-flag"></i> Reportar Problema
+                <button class="btn-secondary" style="flex:1;" onclick="showPage('cadastro')">
+                    <i class="fas fa-user-plus"></i> Cadastrar
                 </button>
                 <button class="btn-outline" style="flex:1;" onclick="logoutUser()">
                     <i class="fas fa-sign-out-alt"></i> Sair
@@ -2040,14 +2327,9 @@ function renderProfile() {
 // ============================================================
 // INICIALIZAR
 // ============================================================
-// Populate provider select after providers load
-setTimeout(() => {
-    populateProviderSelect();
-}, 1000);
-
-console.log('🚀 Salo Urgente - App Real com Firebase!');
-console.log('📱 WhatsApp: +' + WHATSAPP_NUMBER);
-console.log('🔗 Repositório: admyacm-hub/salo-urgente');
+console.log('🚀 Salo Urgente - App Completa com Firebase!');
+console.log('👑 Super Usuários:', SUPER_USERS);
+console.log('📱 WhatsApp: +244923529486');
 </script>
 </body>
 </html>
