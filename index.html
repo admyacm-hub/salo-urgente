@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>ServiçoLocal - Marketplace</title>
+    <title>SalO Urgente - Marketplace de Serviços</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ===== ESTILOS COMPACTOS ===== */
+        /* ===== ESTILOS COMPLETOS ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         body {
             background: #f0f4f8;
@@ -33,13 +33,33 @@
             border-bottom: 1px solid #e9edf2;
         }
         .logo {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             color: #0f2b3d;
         }
         .logo i {
             color: #2b7a62;
             margin-right: 6px;
+        }
+        .logo span {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 400;
+            margin-left: 4px;
+        }
+        .header-actions {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+        }
+        .header-actions i {
+            font-size: 20px;
+            cursor: pointer;
+            color: #475569;
+            transition: 0.2s;
+        }
+        .header-actions i:hover {
+            color: #0f2b3d;
         }
         .bottom-nav {
             position: fixed;
@@ -67,6 +87,8 @@
             border-radius: 20px;
             transition: 0.2s;
             text-decoration: none;
+            border: none;
+            background: transparent;
         }
         .bottom-nav .nav-item.active {
             color: #0f2b3d;
@@ -89,6 +111,8 @@
         }
         .card-provider:hover {
             border-color: #b0c4de;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         .provider-header {
             display: flex;
@@ -139,6 +163,8 @@
             margin-top: 10px;
             font-size: 13px;
             color: #334155;
+            flex-wrap: wrap;
+            gap: 4px;
         }
         .provider-meta i {
             color: #2b7a62;
@@ -195,6 +221,10 @@
             background: #1a3f55;
             transform: scale(0.98);
         }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
         .btn-outline {
             background: transparent;
             border: 1px solid #cbd5e1;
@@ -203,6 +233,10 @@
             font-weight: 500;
             cursor: pointer;
             transition: 0.2s;
+            width: 100%;
+        }
+        .btn-outline:hover {
+            background: #f1f5f9;
         }
         .hidden {
             display: none !important;
@@ -253,6 +287,7 @@
             margin-bottom: 8px;
             max-width: 80%;
             font-size: 14px;
+            word-wrap: break-word;
         }
         .msg-client {
             background: #d9e2ef;
@@ -284,6 +319,10 @@
             padding: 0 20px;
             font-weight: 600;
             cursor: pointer;
+            transition: 0.2s;
+        }
+        .chat-input-area button:hover {
+            background: #1a3f55;
         }
         .rating-stars i {
             color: #d1d5db;
@@ -294,6 +333,9 @@
         }
         .rating-stars i.active {
             color: #facc15;
+        }
+        .rating-stars i:hover {
+            transform: scale(1.1);
         }
         .toast {
             position: fixed;
@@ -310,6 +352,7 @@
             max-width: 90%;
             text-align: center;
             font-size: 14px;
+            transition: 0.3s;
         }
         .toast.error {
             background: #b91c1c;
@@ -317,22 +360,117 @@
         .toast.success {
             background: #0b7e5e;
         }
-        .setup-guide {
-            background: #fff9e6;
-            border: 1px solid #fcd34d;
-            border-radius: 12px;
-            padding: 16px;
-            margin: 12px 0;
-            font-size: 13px;
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s ease-in-out infinite;
         }
-        .setup-guide code {
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: #94a3b8;
+        }
+        .empty-state i {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 12px;
+            color: #cbd5e1;
+        }
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            padding: 20px;
+        }
+        .modal-content {
+            background: white;
+            max-width: 400px;
+            width: 100%;
+            border-radius: 28px;
+            padding: 24px;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        /* Tabs de cadastro */
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            margin: 12px 0 16px;
+        }
+        .tab-buttons button {
+            flex: 1;
+            padding: 10px;
+            border-radius: 40px;
+            border: 1px solid #d1d9e6;
+            background: transparent;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tab-buttons button.active {
+            background: #0f2b3d;
+            color: white;
+            border-color: #0f2b3d;
+        }
+        .provider-photos {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 8px 0;
+        }
+        .provider-photos img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #e9edf2;
+        }
+        .photo-placeholder {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
             background: #f1f5f9;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 11px;
+            border: 1px dashed #cbd5e1;
         }
-        .setup-guide strong {
-            color: #92400e;
+        @media (min-width: 640px) {
+            .app-container {
+                max-width: 600px;
+                padding: 24px;
+            }
+            .bottom-nav {
+                max-width: 600px;
+            }
         }
     </style>
 </head>
@@ -340,14 +478,17 @@
     <div class="app-container" id="app">
         <!-- HEADER -->
         <div class="header">
-            <div class="logo"><i class="fas fa-tools"></i> ServiçoLocal</div>
+            <div class="logo">
+                <i class="fas fa-tools"></i> SalO Urgente
+                <span>Angola</span>
+            </div>
             <div class="header-actions">
-                <i class="fas fa-user-circle" onclick="showTab('perfil')" style="font-size:22px;cursor:pointer;"></i>
-                <i class="fas fa-sign-out-alt" onclick="logout()" id="logoutBtn" style="display:none;font-size:20px;cursor:pointer;margin-left:12px;"></i>
+                <i class="fas fa-user-circle" onclick="showTab('perfil')" title="Perfil"></i>
+                <i class="fas fa-sign-out-alt" onclick="logout()" id="logoutBtn" style="display:none;" title="Sair"></i>
             </div>
         </div>
 
-        <!-- PÁGINAS -->
+        <!-- CONTEÚDO -->
         <div id="pageContent">
             <!-- HOME -->
             <div id="homePage">
@@ -355,8 +496,8 @@
                     <input type="text" id="searchInput" placeholder="Buscar serviço..." style="flex:1; padding:12px 16px; border-radius:40px; border:1px solid #d1d9e6; font-size:15px;" />
                     <button class="btn-primary" style="width:auto; padding:0 20px;" onclick="searchProviders()"><i class="fas fa-search"></i></button>
                 </div>
-                <div class="flex gap-8" style="margin-bottom:12px;">
-                    <select id="categoryFilter" style="flex:1; padding:10px 14px; border-radius:40px; border:1px solid #d1d9e6; background:white;">
+                <div class="flex gap-8" style="margin-bottom:12px;flex-wrap:wrap;">
+                    <select id="categoryFilter" style="flex:1; padding:10px 14px; border-radius:40px; border:1px solid #d1d9e6; background:white;min-width:120px;">
                         <option value="">Todas categorias</option>
                         <option value="Eletricista">Eletricista</option>
                         <option value="Encanador">Encanador</option>
@@ -366,81 +507,75 @@
                         <option value="Marcenaria">Marcenaria</option>
                         <option value="Carpinteiro">Carpinteiro</option>
                         <option value="Pedreiro">Pedreiro</option>
+                        <option value="Mecânico">Mecânico</option>
+                        <option value="Cabeleireiro">Cabeleireiro</option>
                     </select>
-                    <input type="text" id="locationFilter" placeholder="Sua localização" style="flex:1; padding:10px 14px; border-radius:40px; border:1px solid #d1d9e6;" />
+                    <input type="text" id="locationFilter" placeholder="Sua localização" style="flex:1; padding:10px 14px; border-radius:40px; border:1px solid #d1d9e6;min-width:120px;" />
                 </div>
-                <div id="providerList"></div>
+                <div id="providerList">
+                    <div class="empty-state">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Carregando prestadores...</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- AUTENTICAÇÃO (Login / Criar conta) -->
+            <!-- AUTENTICAÇÃO -->
             <div id="authPage" class="hidden">
                 <h3 style="margin:16px 0;" id="authTitle">Criar conta</h3>
-
-                <!-- GUIA DE CONFIGURAÇÃO (só aparece se Firebase não estiver configurado) -->
-                <div id="firebaseSetupGuide" class="setup-guide">
-                    <strong>⚠️ Configure o Firebase para usar autenticação real:</strong>
-                    <ol style="margin:8px 0 0 16px;line-height:1.8;">
-                        <li>Acesse <a href="https://console.firebase.google.com/" target="_blank">console.firebase.google.com</a></li>
-                        <li>Crie um projeto e ative <strong>Authentication</strong> (método Email/Senha)</li>
-                        <li>Ative <strong>Firestore Database</strong> no modo de teste</li>
-                        <li>Copie as credenciais em <strong>Project Settings → Your apps</strong></li>
-                        <li>Substitua no código: <code>const firebaseConfig = { ... }</code></li>
-                    </ol>
-                    <p style="margin-top:8px;font-size:12px;color:#78350f;">🔑 Use a chave da sua conta, não a de demonstração.</p>
-                </div>
-
                 <div id="authForm">
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" id="authEmail" placeholder="seu@email.com" value="admin.yacm@gmail.com" />
+                        <input type="email" id="authEmail" placeholder="seu@email.com" />
                     </div>
                     <div class="form-group">
                         <label>Palavra-passe</label>
                         <input type="password" id="authPassword" placeholder="Mínimo 6 caracteres" />
                     </div>
-                    <button class="btn-primary" onclick="handleAuth()" id="authButton">Criar conta</button>
+                    <button class="btn-primary" onclick="handleAuth()" id="authButton">
+                        Criar conta
+                    </button>
                     <p style="text-align:center;margin-top:12px;">
                         <span id="authSwitchText">Já tem conta?</span>
-                        <a href="#" onclick="toggleAuthMode()" id="authSwitchLink">Entrar</a>
+                        <a href="#" onclick="toggleAuthMode()" id="authSwitchLink" style="color:#0f2b3d;font-weight:500;">Entrar</a>
                     </p>
                 </div>
-
                 <div class="whatsapp-notice">
-                    <i class="fab fa-whatsapp"></i> Prestadores: após cadastro, enviamos notificação real para <strong>+244 923 529 486</strong>
+                    <i class="fab fa-whatsapp"></i> Prestadores: após cadastro, enviamos notificação para <strong>+244 923 529 486</strong> para aprovação manual.
                 </div>
             </div>
 
-            <!-- REGISTRO PRESTADOR (pós-login) -->
+            <!-- REGISTRO PRESTADOR -->
             <div id="registerPage" class="hidden">
-                <h3 style="margin:16px 0;">Complete seu cadastro como Prestador</h3>
-                <div class="form-group"><label>Nome completo</label><input id="regName" placeholder="Seu nome completo" /></div>
-                <div class="form-group"><label>Categoria</label>
-                    <select id="regCategory">
-                        <option>Eletricista</option><option>Encanador</option><option>Pintor</option>
-                        <option>Jardinagem</option><option>Limpeza</option><option>Marcenaria</option>
-                        <option>Carpinteiro</option><option>Pedreiro</option>
-                    </select>
+                <h3 style="margin:16px 0;">Complete seu cadastro</h3>
+                <div class="tab-buttons">
+                    <button class="active" onclick="setRegisterType('provider')" id="regProviderBtn">Sou Prestador</button>
+                    <button onclick="setRegisterType('client')" id="regClientBtn">Sou Cliente</button>
                 </div>
-                <div class="form-group"><label>Área de atendimento</label><input id="regArea" placeholder="Bairro, cidade, zona" /></div>
-                <div class="form-group"><label>Descrição do serviço</label><textarea id="regDesc" placeholder="Descreva seus serviços..."></textarea></div>
-                <div class="form-group"><label>Preço médio (Kz ou R$)</label><input id="regPrice" type="number" placeholder="70" /></div>
-                <div class="form-group"><label>Fotos (URLs separadas por vírgula)</label><input id="regPhotos" placeholder="https://exemplo.com/foto1.jpg, https://..." /></div>
-                <button class="btn-primary" onclick="registerProvider()">Cadastrar como Prestador</button>
-                <button class="btn-outline mt-8" style="width:100%;" onclick="skipRegistration()">Sou apenas Cliente</button>
+                <div id="registerForm">
+                    <!-- Renderizado dinamicamente -->
+                </div>
             </div>
 
             <!-- CHAT -->
             <div id="chatPage" class="hidden">
                 <h3 style="margin:8px 0;"><i class="fas fa-comment-dots"></i> Conversa</h3>
-                <div id="chatProviderName" style="font-weight:500; margin-bottom:6px;font-size:16px;">Selecione um prestador</div>
+                <div id="chatProviderName" style="font-weight:500; margin-bottom:6px;font-size:16px;">
+                    Selecione um prestador
+                </div>
                 <div class="chat-messages" id="chatMessages">
-                    <div class="text-muted text-center" style="padding:20px 0;">Inicie uma conversa selecionando um prestador</div>
+                    <div class="text-center text-muted" style="padding:20px 0;">
+                        <i class="fas fa-comment" style="font-size:32px;display:block;margin-bottom:8px;color:#cbd5e1;"></i>
+                        Inicie uma conversa
+                    </div>
                 </div>
                 <div class="chat-input-area">
                     <input type="text" id="chatInput" placeholder="Digite sua mensagem..." />
                     <button onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
                 </div>
-                <button class="btn-primary mt-8" style="background:#2b7a62;" onclick="closeService()">Fechar serviço e avaliar</button>
+                <button class="btn-primary mt-8" style="background:#2b7a62;" onclick="closeService()">
+                    Fechar serviço e avaliar
+                </button>
             </div>
 
             <!-- PERFIL -->
@@ -450,17 +585,25 @@
             </div>
         </div>
 
-        <!-- NAVEGAÇÃO INFERIOR -->
+        <!-- NAVEGAÇÃO -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="showTab('home')" id="navHome"><i class="fas fa-home"></i><span>Início</span></div>
-            <div class="nav-item" onclick="showTab('auth')" id="navAuth"><i class="fas fa-user-plus"></i><span>Entrar</span></div>
-            <div class="nav-item" onclick="showTab('chat')" id="navChat"><i class="fas fa-comment"></i><span>Chat</span></div>
-            <div class="nav-item" onclick="showTab('perfil')" id="navProfile"><i class="fas fa-star"></i><span>Perfil</span></div>
+            <button class="nav-item active" onclick="showTab('home')" id="navHome">
+                <i class="fas fa-home"></i><span>Início</span>
+            </button>
+            <button class="nav-item" onclick="showTab('auth')" id="navAuth">
+                <i class="fas fa-user-plus"></i><span>Entrar</span>
+            </button>
+            <button class="nav-item" onclick="showTab('chat')" id="navChat">
+                <i class="fas fa-comment"></i><span>Chat</span>
+            </button>
+            <button class="nav-item" onclick="showTab('perfil')" id="navProfile">
+                <i class="fas fa-star"></i><span>Perfil</span>
+            </button>
         </div>
 
         <!-- MODAL AVALIAÇÃO -->
-        <div id="ratingModal" class="hidden" style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; z-index:20; padding:20px;">
-            <div style="background:white; max-width:400px; width:100%; border-radius:28px; padding:24px;">
+        <div id="ratingModal" class="modal-overlay hidden">
+            <div class="modal-content">
                 <h4 style="margin-bottom:12px;">⭐ Avaliar prestador</h4>
                 <div class="rating-stars" id="ratingStars">
                     <i class="fas fa-star" data-val="1"></i>
@@ -469,7 +612,7 @@
                     <i class="fas fa-star" data-val="4"></i>
                     <i class="fas fa-star" data-val="5"></i>
                 </div>
-                <textarea id="ratingComment" placeholder="Comentário (opcional)" style="width:100%; padding:10px; border-radius:12px; border:1px solid #d1d9e6; margin:12px 0;resize:vertical;"></textarea>
+                <textarea id="ratingComment" placeholder="Comentário (opcional)" style="width:100%; padding:10px; border-radius:12px; border:1px solid #d1d9e6; margin:12px 0;resize:vertical;min-height:60px;"></textarea>
                 <div class="flex gap-8">
                     <button class="btn-primary" style="flex:1;" onclick="submitRating()">Enviar</button>
                     <button class="btn-outline" style="flex:1;" onclick="closeRatingModal()">Cancelar</button>
@@ -488,42 +631,27 @@
 
     <script>
         // ============================================================
-        // 🔑 SUBSTITUA AQUI PELAS SUAS CREDENCIAIS REAIS DO FIREBASE
+        // 🔥 FIREBASE CONFIG - SUAS CREDENCIAIS
         // ============================================================
         const firebaseConfig = {
-            apiKey: "AIzaSyDemoKeyNaoUseEsta", // <-- COLE SUA API KEY REAL AQUI
-            authDomain: "seu-projeto.firebaseapp.com", // <-- SEU PROJETO
-            projectId: "seu-projeto", // <-- ID DO PROJETO
-            storageBucket: "seu-projeto.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
+            apiKey: "AIzaSyArTnfdLQ21V8kDu3o7jJd1ZV4IbpIU6qY",
+            authDomain: "salo-urgente.firebaseapp.com",
+            projectId: "salo-urgente",
+            storageBucket: "salo-urgente.firebasestorage.app",
+            messagingSenderId: "748135559737",
+            appId: "1:748135559737:web:6950f8290c9ab3b9f353e8",
+            measurementId: "G-ZT3L8299G1"
         };
 
         // ============================================================
-        // INICIALIZAÇÃO DO FIREBASE
+        // INICIALIZAÇÃO
         // ============================================================
-        let firebaseInitialized = false;
-        let auth = null;
-        let db = null;
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-        try {
-            // Verificar se a chave foi substituída
-            if (firebaseConfig.apiKey === "AIzaSyDemoKeyNaoUseEsta") {
-                console.warn('⚠️ Use uma API key real do Firebase!');
-                document.getElementById('firebaseSetupGuide').style.display = 'block';
-            } else {
-                firebase.initializeApp(firebaseConfig);
-                auth = firebase.auth();
-                db = firebase.firestore();
-                firebaseInitialized = true;
-                document.getElementById('firebaseSetupGuide').style.display = 'none';
-                console.log('🔥 Firebase conectado com sucesso!');
-            }
-        } catch (e) {
-            console.error('❌ Erro ao inicializar Firebase:', e);
-            document.getElementById('firebaseSetupGuide').style.display = 'block';
-            showToast('❌ Configure o Firebase corretamente');
-        }
+        console.log('🔥 Firebase conectado com sucesso!');
+        console.log('📁 Projeto:', firebaseConfig.projectId);
 
         // ============================================================
         // ESTADO GLOBAL
@@ -532,10 +660,12 @@
         let currentUserData = null;
         let selectedProviderId = null;
         let ratingProviderId = null;
-        let isLoginMode = false; // false = criar conta, true = login
+        let isLoginMode = false;
+        let registerType = 'provider';
+        let isLoading = false;
 
         // ============================================================
-        // TOAST (notificações)
+        // TOAST
         // ============================================================
         function showToast(msg, type = '') {
             const el = document.getElementById('toast');
@@ -558,18 +688,17 @@
         }
 
         function handleAuth() {
-            if (!firebaseInitialized) {
-                return showToast('❌ Configure o Firebase primeiro (veja o guia acima)', 'error');
-            }
-
             const email = document.getElementById('authEmail').value.trim();
             const pass = document.getElementById('authPassword').value.trim();
 
             if (!email || !pass) return showToast('Preencha email e senha', 'error');
             if (pass.length < 6) return showToast('A senha deve ter no mínimo 6 caracteres', 'error');
 
+            const btn = document.getElementById('authButton');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Aguarde...';
+
             if (isLoginMode) {
-                // LOGIN
                 auth.signInWithEmailAndPassword(email, pass)
                     .then(cred => {
                         showToast('✅ Login realizado!', 'success');
@@ -577,93 +706,77 @@
                     })
                     .catch(err => {
                         console.error('Erro login:', err);
-                        if (err.code === 'auth/api-key-not-valid') {
-                            showToast('❌ API Key inválida! Configure corretamente.', 'error');
-                        } else if (err.code === 'auth/user-not-found') {
+                        if (err.code === 'auth/user-not-found') {
                             showToast('❌ Usuário não encontrado. Crie uma conta.', 'error');
+                        } else if (err.code === 'auth/wrong-password') {
+                            showToast('❌ Senha incorreta.', 'error');
                         } else {
                             showToast('❌ ' + err.message, 'error');
                         }
+                        btn.disabled = false;
+                        btn.textContent = 'Entrar';
                     });
             } else {
-                // CRIAR CONTA
                 auth.createUserWithEmailAndPassword(email, pass)
                     .then(cred => {
                         showToast('✅ Conta criada! Complete seu cadastro.', 'success');
-                        // Salvar no Firestore
-                        if (db) {
-                            db.collection('users').doc(cred.user.uid).set({
-                                email: email,
-                                name: '',
-                                type: 'pending',
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                            }).then(() => {
-                                loadUserData(cred.user.uid);
-                            });
-                        } else {
-                            loadUserData(cred.user.uid);
-                        }
+                        return db.collection('users').doc(cred.user.uid).set({
+                            email: email,
+                            name: '',
+                            type: 'pending',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    })
+                    .then(() => {
+                        loadUserData(auth.currentUser.uid);
                     })
                     .catch(err => {
                         console.error('Erro criação:', err);
-                        if (err.code === 'auth/api-key-not-valid') {
-                            showToast('❌ API Key inválida! Use uma chave válida do Firebase.', 'error');
-                        } else if (err.code === 'auth/email-already-in-use') {
+                        if (err.code === 'auth/email-already-in-use') {
                             showToast('❌ Este email já está em uso. Faça login.', 'error');
                         } else {
                             showToast('❌ ' + err.message, 'error');
                         }
+                        btn.disabled = false;
+                        btn.textContent = 'Criar conta';
                     });
             }
         }
 
         function logout() {
-            if (auth) {
-                auth.signOut().then(() => {
-                    currentUser = null;
-                    currentUserData = null;
-                    document.getElementById('logoutBtn').style.display = 'none';
-                    showToast('👋 Desconectado', '');
-                    showTab('home');
-                    renderProfile();
-                    updateNav();
-                });
-            } else {
-                showToast('❌ Firebase não inicializado', 'error');
-            }
+            auth.signOut().then(() => {
+                currentUser = null;
+                currentUserData = null;
+                document.getElementById('logoutBtn').style.display = 'none';
+                showToast('👋 Desconectado', '');
+                showTab('home');
+                renderProfile();
+                updateNav();
+            });
         }
 
         // ============================================================
         // CARREGAR DADOS DO USUÁRIO
         // ============================================================
         function loadUserData(uid) {
-            if (!db) {
-                currentUser = { uid, email: auth.currentUser?.email };
-                currentUserData = { type: 'pending', name: '' };
-                document.getElementById('logoutBtn').style.display = 'block';
-                showTab('register');
-                updateNav();
-                renderProfile();
-                return;
-            }
-
             db.collection('users').doc(uid).get().then(doc => {
+                const btn = document.getElementById('authButton');
+                btn.disabled = false;
+                btn.textContent = isLoginMode ? 'Entrar' : 'Criar conta';
+
                 if (doc.exists) {
                     currentUserData = doc.data();
                     currentUser = { uid, ...currentUserData, email: auth.currentUser?.email };
                     document.getElementById('logoutBtn').style.display = 'block';
 
-                    if (currentUserData.type === 'provider') {
-                        loadProviders();
-                        showTab('home');
-                    } else if (currentUserData.type === 'client') {
-                        loadProviders();
+                    if (currentUserData.type === 'provider' || currentUserData.type === 'client') {
                         showTab('home');
                     } else {
                         showTab('register');
                     }
                     renderProfile();
                     updateNav();
+                    loadProviders();
                 } else {
                     // Criar documento se não existir
                     db.collection('users').doc(uid).set({
@@ -675,45 +788,23 @@
                 }
             }).catch(err => {
                 console.error('Erro ao carregar usuário:', err);
-                // Fallback: permitir uso limitado
-                currentUser = { uid, email: auth.currentUser?.email };
-                currentUserData = { type: 'pending', name: '' };
-                showTab('register');
+                showToast('❌ Erro ao carregar perfil', 'error');
             });
         }
 
         // ============================================================
-        // PRESTADORES (Firestore)
+        // PRESTADORES
         // ============================================================
         function loadProviders() {
-            if (!db) {
-                // Fallback com dados locais
-                const fallback = [{
-                    id: '1',
-                    name: 'Carlos Eletricista',
-                    category: 'Eletricista',
-                    area: 'Centro, Luanda',
-                    description: 'Instalações e reparos elétricos.',
-                    price: 85,
-                    verified: true,
-                    rating: 4.8,
-                    ratings: []
-                }, {
-                    id: '2',
-                    name: 'Maria Encanadora',
-                    category: 'Encanador',
-                    area: 'Zona Sul, Luanda',
-                    description: 'Consertos de vazamentos.',
-                    price: 70,
-                    verified: false,
-                    rating: 4.5,
-                    ratings: []
-                }];
-                renderProviders(fallback);
-                return;
-            }
+            const container = document.getElementById('providerList');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Carregando prestadores...</p>
+                </div>
+            `;
 
-            db.collection('providers').orderBy('rating', 'desc').limit(50).get()
+            db.collection('providers').orderBy('createdAt', 'desc').limit(50).get()
                 .then(snapshot => {
                     const list = [];
                     snapshot.forEach(doc => {
@@ -723,7 +814,13 @@
                 })
                 .catch(err => {
                     console.error('Erro ao carregar prestadores:', err);
-                    showToast('⚠️ Erro ao carregar prestadores', 'error');
+                    container.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-circle"></i>
+                            <p>Erro ao carregar. Tente novamente.</p>
+                            <button class="btn-primary" style="width:auto;padding:10px 30px;margin-top:12px;" onclick="loadProviders()">Tentar novamente</button>
+                        </div>
+                    `;
                 });
         }
 
@@ -731,9 +828,10 @@
             const container = document.getElementById('providerList');
             if (!list || list.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center text-muted" style="padding:40px 0;">
-                        <i class="fas fa-search" style="font-size:32px;display:block;margin-bottom:12px;color:#cbd5e1;"></i>
-                        Nenhum prestador encontrado.
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>Nenhum prestador encontrado.</p>
+                        <p style="font-size:13px;margin-top:4px;">Seja o primeiro a se cadastrar!</p>
                     </div>
                 `;
                 return;
@@ -746,6 +844,20 @@
                     `<span class="badge-pending">⏳ Aguardando</span>`;
 
                 const stars = p.rating ? '⭐'.repeat(Math.min(Math.round(p.rating), 5)) : '';
+                const ratingText = p.rating ? ` ${p.rating}` : ' Novo';
+
+                // Fotos
+                let photosHtml = '';
+                if (p.photos && p.photos.length > 0) {
+                    photosHtml = `<div class="provider-photos">`;
+                    p.photos.slice(0, 3).forEach(url => {
+                        photosHtml += `<img src="${url}" alt="foto" onerror="this.style.display='none'" />`;
+                    });
+                    if (p.photos.length > 3) {
+                        photosHtml += `<div class="photo-placeholder">+${p.photos.length - 3}</div>`;
+                    }
+                    photosHtml += `</div>`;
+                }
 
                 html += `
                     <div class="card-provider" onclick="selectProvider('${p.id}')">
@@ -756,13 +868,14 @@
                                 <div style="font-size:13px;color:#475569;"><i class="fas fa-tag"></i> ${p.category || 'Geral'}</div>
                             </div>
                         </div>
+                        ${photosHtml}
                         <div class="provider-meta">
                             <span><i class="fas fa-map-pin"></i> ${p.area || 'N/A'}</span>
                             <span><i class="fas fa-dollar-sign"></i> ${p.price ? p.price + ' Kz' : 'Sob consulta'}</span>
-                            <span class="provider-rating">${stars} ${p.rating || 'Novo'}</span>
+                            <span class="provider-rating">${stars}${ratingText}</span>
                         </div>
                         ${p.description ? `<div style="font-size:13px;color:#475569;margin-top:6px;">${p.description}</div>` : ''}
-                        ${p.ratings && p.ratings.length > 0 ? `<div style="margin-top:6px;font-size:12px;color:#64748b;">${p.ratings.length} avaliação(ões)</div>` : ''}
+                        ${p.ratings && p.ratings.length > 0 ? `<div style="margin-top:6px;font-size:12px;color:#64748b;">📝 ${p.ratings.length} avaliação(ões)</div>` : ''}
                     </div>
                 `;
             });
@@ -773,11 +886,6 @@
             const search = document.getElementById('searchInput').value.toLowerCase();
             const category = document.getElementById('categoryFilter').value;
             const location = document.getElementById('locationFilter').value.toLowerCase();
-
-            if (!db) {
-                loadProviders();
-                return;
-            }
 
             let query = db.collection('providers');
 
@@ -797,15 +905,54 @@
                 });
                 list.sort((a, b) => (b.rating || 0) - (a.rating || 0));
                 renderProviders(list);
-            }).catch(() => loadProviders());
+            }).catch(err => {
+                console.error('Erro na busca:', err);
+                loadProviders();
+            });
         }
 
         // ============================================================
-        // REGISTRO PRESTADOR
+        // REGISTRO (PRESTADOR / CLIENTE)
         // ============================================================
+        function setRegisterType(type) {
+            registerType = type;
+            document.getElementById('regProviderBtn').className = type === 'provider' ? 'active' : '';
+            document.getElementById('regClientBtn').className = type === 'client' ? 'active' : '';
+            renderRegisterForm();
+        }
+
+        function renderRegisterForm() {
+            const container = document.getElementById('registerForm');
+            if (registerType === 'provider') {
+                container.innerHTML = `
+                    <div class="form-group"><label>Nome completo</label><input id="regName" placeholder="Seu nome completo" /></div>
+                    <div class="form-group"><label>Categoria</label>
+                        <select id="regCategory">
+                            <option>Eletricista</option><option>Encanador</option><option>Pintor</option>
+                            <option>Jardinagem</option><option>Limpeza</option><option>Marcenaria</option>
+                            <option>Carpinteiro</option><option>Pedreiro</option><option>Mecânico</option>
+                            <option>Cabeleireiro</option><option>Chaveiro</option><option>Vidraceiro</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Área de atendimento</label><input id="regArea" placeholder="Bairro, cidade, zona" /></div>
+                    <div class="form-group"><label>Descrição do serviço</label><textarea id="regDesc" placeholder="Descreva seus serviços..."></textarea></div>
+                    <div class="form-group"><label>Preço médio (Kz)</label><input id="regPrice" type="number" placeholder="70" /></div>
+                    <div class="form-group"><label>Fotos (URLs separadas por vírgula)</label><input id="regPhotos" placeholder="https://exemplo.com/foto1.jpg, https://..." /></div>
+                    <button class="btn-primary" onclick="registerProvider()">Cadastrar como Prestador</button>
+                    <button class="btn-outline mt-8" onclick="skipRegistration()">Sou apenas Cliente</button>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="form-group"><label>Nome completo</label><input id="regName" placeholder="Seu nome completo" /></div>
+                    <div class="form-group"><label>Localização</label><input id="regLocation" placeholder="Bairro, cidade" /></div>
+                    <button class="btn-primary" onclick="registerClient()">Cadastrar como Cliente</button>
+                    <button class="btn-outline mt-8" onclick="skipRegistration()">Sou Prestador</button>
+                `;
+            }
+        }
+
         function registerProvider() {
             if (!currentUser) return showToast('Faça login primeiro', 'error');
-            if (!db) return showToast('❌ Firebase não configurado', 'error');
 
             const name = document.getElementById('regName').value.trim();
             const category = document.getElementById('regCategory').value;
@@ -830,6 +977,10 @@
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
 
+            const btn = document.querySelector('#registerForm .btn-primary');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Cadastrando...';
+
             db.collection('providers').add(providerData)
                 .then(docRef => {
                     return db.collection('users').doc(currentUser.uid).update({
@@ -840,30 +991,39 @@
                 })
                 .then(() => {
                     showToast('✅ Prestador cadastrado! Aguardando aprovação.', 'success');
-                    // Simular notificação WhatsApp
+                    // Notificação WhatsApp simulada
                     console.log(`📲 WhatsApp +244923529486: Novo prestador ${name} - ${category}`);
                     showToast('📱 Notificação enviada para +244 923 529 486', '');
                     currentUserData.type = 'provider';
                     loadProviders();
                     showTab('home');
+                    btn.disabled = false;
+                    btn.textContent = 'Cadastrar como Prestador';
                 })
                 .catch(err => {
                     console.error('Erro ao cadastrar:', err);
                     showToast('❌ Erro ao salvar: ' + err.message, 'error');
+                    btn.disabled = false;
+                    btn.textContent = 'Cadastrar como Prestador';
                 });
         }
 
-        function skipRegistration() {
-            if (!currentUser || !db) return showToast('Faça login primeiro', 'error');
+        function registerClient() {
+            if (!currentUser) return showToast('Faça login primeiro', 'error');
 
-            const name = document.getElementById('regName').value.trim() || 'Cliente';
+            const name = document.getElementById('regName').value.trim();
+            const location = document.getElementById('regLocation').value.trim();
+
+            if (!name || !location) return showToast('Preencha nome e localização', 'error');
+
             db.collection('users').doc(currentUser.uid).update({
                 type: 'client',
-                name: name
+                name: name,
+                location: location
             }).then(() => {
                 currentUserData.type = 'client';
                 currentUserData.name = name;
-                showToast('✅ Cadastro como cliente concluído', 'success');
+                showToast('✅ Cliente cadastrado com sucesso!', 'success');
                 loadProviders();
                 showTab('home');
                 renderProfile();
@@ -872,20 +1032,49 @@
             });
         }
 
+        function skipRegistration() {
+            if (!currentUser) return showToast('Faça login primeiro', 'error');
+
+            const name = document.getElementById('regName').value.trim() || 'Usuário';
+
+            if (registerType === 'provider') {
+                // Tentar cadastrar como cliente
+                db.collection('users').doc(currentUser.uid).update({
+                    type: 'client',
+                    name: name
+                }).then(() => {
+                    currentUserData.type = 'client';
+                    currentUserData.name = name;
+                    showToast('✅ Cadastro como cliente concluído', 'success');
+                    loadProviders();
+                    showTab('home');
+                    renderProfile();
+                }).catch(err => {
+                    showToast('❌ Erro: ' + err.message, 'error');
+                });
+            } else {
+                db.collection('users').doc(currentUser.uid).update({
+                    type: 'client',
+                    name: name
+                }).then(() => {
+                    currentUserData.type = 'client';
+                    currentUserData.name = name;
+                    showToast('✅ Cadastro como cliente concluído', 'success');
+                    loadProviders();
+                    showTab('home');
+                    renderProfile();
+                }).catch(err => {
+                    showToast('❌ Erro: ' + err.message, 'error');
+                });
+            }
+        }
+
         // ============================================================
         // CHAT
         // ============================================================
         function selectProvider(id) {
             if (!currentUser) return showToast('Faça login para conversar', 'error');
             selectedProviderId = id;
-
-            if (!db) {
-                document.getElementById('chatProviderName').textContent = '💬 Chat (modo offline)';
-                document.getElementById('chatMessages').innerHTML =
-                    '<div class="text-muted text-center" style="padding:20px 0;">Conecte o Firebase para mensagens reais.</div>';
-                showTab('chat');
-                return;
-            }
 
             db.collection('providers').doc(id).get().then(doc => {
                 if (doc.exists) {
@@ -900,16 +1089,22 @@
                         .get()
                         .then(snap => {
                             let msgs = [];
+                            let chatId = null;
                             snap.forEach(d => {
                                 msgs = d.data().messages || [];
+                                chatId = d.id;
                             });
+
                             if (msgs.length === 0) {
                                 document.getElementById('chatMessages').innerHTML =
-                                    '<div class="text-muted text-center" style="padding:20px 0;">Inicie uma conversa...</div>';
+                                    '<div class="text-center text-muted" style="padding:20px 0;">Inicie uma conversa...</div>';
                             } else {
                                 document.getElementById('chatMessages').innerHTML = msgs.map(m =>
                                     `<div class="msg ${m.sender === 'client' ? 'msg-client' : 'msg-provider'}">${m.text}</div>`
                                 ).join('');
+                                // Scroll para o final
+                                const container = document.getElementById('chatMessages');
+                                container.scrollTop = container.scrollHeight;
                             }
                             showTab('chat');
                         });
@@ -921,7 +1116,6 @@
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if (!text || !selectedProviderId || !currentUser) return showToast('Selecione um prestador', 'error');
-            if (!db) return showToast('❌ Firebase não conectado', 'error');
 
             const msg = {
                 text,
@@ -935,7 +1129,6 @@
                 .get()
                 .then(snap => {
                     if (snap.empty) {
-                        // Criar novo chat
                         return db.collection('chats').add({
                             providerId: selectedProviderId,
                             clientId: currentUser.uid,
@@ -953,7 +1146,6 @@
                 .then(() => {
                     input.value = '';
                     showToast('✅ Mensagem enviada', 'success');
-                    // Atualizar chat
                     selectProvider(selectedProviderId);
                 })
                 .catch(err => {
@@ -980,7 +1172,6 @@
             const stars = document.querySelectorAll('#ratingStars i.active');
             const selected = stars.length;
             if (selected === 0) return showToast('Selecione uma nota', 'error');
-            if (!db) return showToast('❌ Firebase não conectado', 'error');
 
             const comment = document.getElementById('ratingComment').value.trim();
             const rating = {
@@ -990,10 +1181,13 @@
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
             };
 
+            const btn = document.querySelector('#ratingModal .btn-primary');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Enviando...';
+
             db.collection('providers').doc(ratingProviderId).update({
                 ratings: firebase.firestore.FieldValue.arrayUnion(rating)
             }).then(() => {
-                // Recalcular média
                 return db.collection('providers').doc(ratingProviderId).get();
             }).then(doc => {
                 const data = doc.data();
@@ -1005,9 +1199,13 @@
                 showToast('⭐ Avaliação enviada com sucesso!', 'success');
                 closeRatingModal();
                 loadProviders();
+                btn.disabled = false;
+                btn.textContent = 'Enviar';
             }).catch(err => {
                 console.error('Erro ao avaliar:', err);
                 showToast('❌ Erro ao enviar avaliação', 'error');
+                btn.disabled = false;
+                btn.textContent = 'Enviar';
             });
         }
 
@@ -1039,13 +1237,16 @@
 
             if (tab === 'home') loadProviders();
             if (tab === 'perfil') renderProfile();
+            if (tab === 'register') {
+                setRegisterType(registerType);
+            }
             updateNav();
         }
 
         function updateNav() {
             const authNav = document.getElementById('navAuth');
             if (currentUser) {
-                authNav.innerHTML = `<i class="fas fa-user"></i><span>Minha conta</span>`;
+                authNav.innerHTML = `<i class="fas fa-user"></i><span>Conta</span>`;
             } else {
                 authNav.innerHTML = `<i class="fas fa-user-plus"></i><span>Entrar</span>`;
             }
@@ -1054,19 +1255,25 @@
         function renderProfile() {
             const container = document.getElementById('profileContent');
             if (currentUserData) {
+                const typeMap = {
+                    'pending': '⏳ Pendente',
+                    'provider': '🔧 Prestador',
+                    'client': '👤 Cliente'
+                };
                 container.innerHTML = `
                     <div style="background:#f1f5f9;padding:18px;border-radius:16px;">
                         <p><strong>${currentUserData.name || 'Usuário'}</strong></p>
                         <p style="font-size:14px;color:#475569;"><i class="fas fa-envelope"></i> ${currentUser?.email || 'N/A'}</p>
-                        <p style="font-size:14px;color:#475569;"><i class="fas fa-user-tag"></i> Tipo: ${currentUserData.type === 'pending' ? 'Pendente' : currentUserData.type === 'provider' ? 'Prestador' : 'Cliente'}</p>
+                        <p style="font-size:14px;color:#475569;"><i class="fas fa-user-tag"></i> ${typeMap[currentUserData.type] || 'Pendente'}</p>
                         ${currentUserData.type === 'provider' ? `<p style="font-size:14px;color:#475569;"><i class="fas fa-check-circle"></i> ${currentUserData.verified ? '✅ Verificado' : '⏳ Aguardando aprovação'}</p>` : ''}
+                        ${currentUserData.location ? `<p style="font-size:14px;color:#475569;"><i class="fas fa-map-pin"></i> ${currentUserData.location}</p>` : ''}
                     </div>
                 `;
             } else {
                 container.innerHTML = `
-                    <div class="text-center text-muted" style="padding:30px 0;">
-                        <i class="fas fa-user-circle" style="font-size:48px;color:#cbd5e1;display:block;margin-bottom:12px;"></i>
-                        Faça login para ver seu perfil.
+                    <div class="empty-state">
+                        <i class="fas fa-user-circle"></i>
+                        <p>Faça login para ver seu perfil.</p>
                         <button class="btn-primary" style="width:auto;padding:10px 30px;margin-top:12px;" onclick="showTab('auth')">Entrar</button>
                     </div>
                 `;
@@ -1074,7 +1281,7 @@
         }
 
         // ============================================================
-        // RATING STARS INTERATIVO
+        // RATING STARS
         // ============================================================
         document.addEventListener('click', function(e) {
             const star = e.target.closest('#ratingStars i');
@@ -1086,35 +1293,44 @@
             }
         });
 
+        // Enter para enviar mensagem
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const input = document.getElementById('chatInput');
+                if (document.activeElement === input) {
+                    sendChatMessage();
+                }
+                const authPass = document.getElementById('authPassword');
+                if (document.activeElement === authPass) {
+                    handleAuth();
+                }
+            }
+        });
+
         // ============================================================
         // OBSERVADOR DE AUTENTICAÇÃO
         // ============================================================
-        if (auth) {
-            auth.onAuthStateChanged(user => {
-                if (user) {
-                    currentUser = user;
-                    document.getElementById('logoutBtn').style.display = 'block';
-                    loadUserData(user.uid);
-                    updateNav();
-                } else {
-                    currentUser = null;
-                    currentUserData = null;
-                    document.getElementById('logoutBtn').style.display = 'none';
-                    updateNav();
-                }
-            });
-        }
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('logoutBtn').style.display = 'block';
+                loadUserData(user.uid);
+                updateNav();
+            } else {
+                currentUser = null;
+                currentUserData = null;
+                document.getElementById('logoutBtn').style.display = 'none';
+                updateNav();
+                renderProfile();
+            }
+        });
 
         // ============================================================
         // INICIALIZAÇÃO
         // ============================================================
+        renderRegisterForm();
         showTab('home');
         updateNav();
-
-        // Se não tiver Firebase, mostrar guia de configuração
-        if (!firebaseInitialized) {
-            document.getElementById('firebaseSetupGuide').style.display = 'block';
-        }
 
         // ============================================================
         // EXPORTAÇÕES GLOBAIS
@@ -1126,7 +1342,9 @@
         window.closeRatingModal = closeRatingModal;
         window.submitRating = submitRating;
         window.registerProvider = registerProvider;
+        window.registerClient = registerClient;
         window.skipRegistration = skipRegistration;
+        window.setRegisterType = setRegisterType;
         window.showTab = showTab;
         window.handleAuth = handleAuth;
         window.toggleAuthMode = toggleAuthMode;
@@ -1135,11 +1353,8 @@
         window.loadProviders = loadProviders;
         window.showToast = showToast;
 
-        console.log('🚀 ServiçoLocal iniciado!');
-        console.log('📌 Para usar autenticação real:');
-        console.log('1. Acesse console.firebase.google.com');
-        console.log('2. Crie um projeto e ative Authentication');
-        console.log('3. Copie suas credenciais para firebaseConfig');
+        console.log('🚀 SalO Urgente iniciado com sucesso!');
+        console.log('📌 Firebase conectado e pronto para uso.');
     </script>
 </body>
 </html>
